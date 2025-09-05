@@ -1,0 +1,58 @@
+<!-- Features hero (unchanged) -->
+ <br>
+ <br>
+ <br>
+<section class="container features-hero">
+  <div class="kicker">CHATBOT FEATURES</div>
+  <h1 class="features-title">
+    Enabling end-to-end<br />
+    customer service automation
+  </h1>
+</section>
+
+<!-- Main features frame -->
+<section class="container" style="display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start">
+  <!-- LEFT rail -->
+  <aside class="card1" style="position:sticky;top:80px;padding:10px">
+    <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px">
+      <li *ngFor="let f of feats; let i = index"
+          (mouseenter)="onHoverNav(i)"
+          [ngStyle]="{
+            'background': activeIndex === i ? 'var(--bgElev)' : 'transparent',
+            'border': activeIndex === i ? '1px solid var(--border)' : '1px solid transparent',
+            'font-weight': activeIndex === i ? '700' : '600',
+            'color': 'var(--ink)'
+          }"
+          style="padding:10px 12px;border-radius:12px;cursor:default;transition:transform .2s, background .2s, border .2s">
+        {{ f.title }}
+      </li>
+    </ul>
+  </aside>
+
+  <!-- RIGHT column -->
+  <main style="min-width:0">
+    <div class="flow-line" style="height:4px;background:var(--border);border-radius:4px;margin:6px 0 16px"></div>
+
+    <!-- NOTE: no inline overflow/snap here -->
+    <div class="flow-track" #track>
+      <article *ngFor="let f of feats; let i = index"
+               class="flow-card"
+               #flowCard
+               [attr.id]="f.id">
+        <span class="flow-chip">{{ i + 1 }}</span>
+
+        <div class="flow-media">
+          <img [src]="f.img" [alt]="f.title" />
+          <span class="flow-tag">✦ AI assist</span>
+          <strong class="flow-title">{{ f.title }}</strong>
+        </div>
+
+        <p class="lead flow-desc">{{ f.desc }}</p>
+      </article>
+    </div>
+  </main>
+</section>
+<br>
+<br>
+<br>
+<app-subscribe-bar></app-subscribe-bar>

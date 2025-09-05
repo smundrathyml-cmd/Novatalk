@@ -1,0 +1,54 @@
+<!-- LAUNCHER (closed) -->
+<div class="chat-launcher" *ngIf="!open">
+  <!-- Suggestion bubble ABOVE the icon -->
+  <button class="suggestion" (click)="toggle()" aria-label="Open chat with Novatalk">
+    <div class="line">🎉 <strong>Welcome back!</strong></div>
+    <div class="line">How may I help you today?</div>
+  </button>
+
+  <!-- Logo button (chat icon) -->
+  <button class="fab" (click)="toggle()" aria-label="Open chat">
+    <img
+      src="/assets/Novatalk.png"
+      alt="Novatalk"
+      class="fab-logo" />
+  </button>
+</div>
+
+<!-- PANEL (open) -->
+<div class="chat-panel" *ngIf="open">
+  <!-- top chrome -->
+  <div class="panel-chrome">
+    <button class="icon-btn" (click)="toggle()" aria-label="Close chat">✕</button>
+  </div>
+
+  <!-- Novatalk pill (uses the SAME logo image) -->
+  <div class="bot-pill">
+    <img
+      src="/assets/Novatalk.png"
+      alt="Novatalk"
+      class="pill-avatar-img" />
+    <span class="pill-name">Novatalk</span>
+  </div>
+
+  <!-- messages -->
+  <div class="panel-body">
+    <div *ngFor="let m of messages"
+         class="msg"
+         [class.bot]="m.from==='bot'"
+         [class.user]="m.from==='user'">
+      <div class="bubble" [class.bubble-alt]="m.alt">{{ m.text }}</div>
+    </div>
+
+    <!-- quick replies (chips) -->
+    <div class="quick-row" *ngIf="quick.length">
+      <button class="quick" *ngFor="let q of quick" (click)="onQuick(q)">{{ q }}</button>
+    </div>
+  </div>
+
+  <!-- input row -->
+  <div class="panel-input">
+    <input [(ngModel)]="input" placeholder="Type" (keydown.enter)="send()" />
+    <button class="btn primary" type="button" (click)="send()">Send</button>
+  </div>
+</div>

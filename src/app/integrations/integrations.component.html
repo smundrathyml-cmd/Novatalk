@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Novatalk • Integrations</title>
+
+  <style>
+    /* ========= quick knobs ========= */
+    .integrations{
+      --content-w: 1028px;
+      --col-gap: 32px;
+      --row-gap: 28px;
+      --icon-size: 60px;
+      --title-size: 24px;
+      --body-size: 14px;
+      --link-size: 14px;
+      --link-color: #0e7cf2;
+      --card-h: 260px;             /* ← fixed box height on desktop */
+    }
+
+    /* ========= section shell ========= */
+    .integrations{padding:24px 0 8px;color:var(--ink)}
+    .integrations-inner{width:var(--content-w);max-width:92vw;margin:0 auto}
+
+    /* breadcrumb */
+    .integrations-breadcrumb{
+      width:var(--content-w);max-width:92vw;margin:6px auto 8px;
+      display:flex;align-items:center;gap:8px;
+      font:600 13px/28px Inter,system-ui,sans-serif;color:#dbe7ff;
+    }
+    .integrations-breadcrumb a{
+      color:#dbe7ff;text-decoration:none;opacity:.9;padding:0 8px;border-radius:8px;
+      display:inline-block;line-height:28px;height:28px;
+      background:rgba(255,255,255,.04);border:1px solid rgba(207,228,255,.12);
+    }
+    .integrations-breadcrumb a:hover{opacity:1;border-color:rgba(207,228,255,.22)}
+    .integrations-breadcrumb .sep{opacity:.65;padding:0 2px}
+
+    .integrations .kicker{
+      margin:0 0 8px;text-align:center;font:700 12px/1.2 Inter,system-ui,sans-serif;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--muted)
+    }
+    .integrations h1{
+      margin:0 auto 18px;max-width:720px;text-align:center;
+      font-size:36px;line-height:1.25;color:#fff
+    }
+
+    /* ========= 4-col grid ========= */
+    .integrations-grid{
+      display:grid;grid-template-columns:repeat(4,1fr);
+      column-gap:var(--col-gap);row-gap:var(--row-gap);
+      align-items:stretch;                 /* stretch all to same height */
+    }
+
+    /* ========= card layout (left-aligned, fixed height) ========= */
+    .integrations-grid .card{
+      display:flex;flex-direction:column;
+      background:transparent;border:0;box-shadow:none;padding:0;
+      height:var(--card-h);                 /* fixed tile height */
+      text-align:left;                      /* enforce left alignment */
+    }
+    /* make sure any inherited .lead center rules are overridden */
+    .integrations-grid .card *{text-align:left}
+
+    .integrations-grid .ico{
+      width:var(--icon-size);height:var(--icon-size);
+      margin:0 0 12px;display:block
+    }
+    .integrations-grid .ico img{width:100%;height:100%;object-fit:contain;display:block}
+
+    .integrations-grid h3{
+      margin:0 0 8px;font-weight:800;font-size:var(--title-size);line-height:1.25;color:#fff
+    }
+
+    .integrations-grid .lead{
+      margin:0;font-size:var(--body-size);line-height:1.6;color:var(--inkSoft)
+    }
+
+    /* button anchored to bottom-left of the box */
+    .integrations-grid .btn-link{
+      margin-top:auto;                     /* pushes it to the bottom */
+      align-self:flex-start;               /* left edge */
+      display:inline-flex;align-items:center;gap:6px;
+      font-weight:700;font-size:var(--link-size);color:var(--link-color);
+      text-decoration:none
+    }
+    .integrations-grid .btn-link:hover{color:#8fd0ff;text-decoration:underline}
+
+    /* ========= responsive ========= */
+    @media (max-width:900px){
+      .integrations-grid{grid-template-columns:repeat(2,1fr)}
+      .integrations-grid .card{height:auto}  /* let it grow on smaller widths */
+    }
+    @media (max-width:560px){
+      .integrations-grid{grid-template-columns:1fr}
+    }
+    /* ==== INTEGRATIONS — visible boxes, no layout shift ==== */
+
+/* 1) Section tokens (match pricing contrast) */
+:root[data-theme='dark']  .integrations{
+  --ig-bg:   #0b0d11;               /* light-black surface */
+  --ig-bd:   rgba(255,255,255,.28); /* clearer border */
+  --ig-ring: rgba(255,255,255,.16); /* outer ring for contrast */
+  --ig-in:   rgba(255,255,255,.07); /* subtle inner edge */
+}
+:root:not([data-theme='dark']) .integrations{
+  --ig-bg:   #f7f9fc;               /* very light grey surface */
+  --ig-bd:   #cfd8eb;               /* clearer border */
+  --ig-ring: rgba(10,20,40,.14);    /* outer ring */
+  --ig-in:   rgba(0,0,0,.04);       /* inner edge */
+}
+
+/* 2) Restore original layout metrics, prepare for overlay */
+.integrations .integrations-grid > .card{
+  /* keep your original spacing/flow */
+  padding: 0 !important;            /* cancel any earlier padding overrides */
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+
+  position: relative;               /* for the overlay */
+  transform: translateZ(0);
+  transition: transform .25s ease, filter .25s ease;
+  will-change: transform;
+  overflow: visible;                /* allow glow to show */
+}
+
+/* 3) Draw the surface/border WITHOUT changing layout */
+.integrations .integrations-grid > .card::before{
+  content: "";
+  position: absolute;
+  inset: -2px;                      /* sits just outside, no reflow */
+  border-radius: 16px;
+  background: var(--ig-bg);
+  border: 1.5px solid var(--ig-bd);
+  box-shadow:
+    0 0 0 1px var(--ig-ring),
+    0 0 0 1px var(--ig-in) inset;
+  z-index: 0;                       /* behind content */
+  pointer-events: none;
+}
+
+/* ensure content stays above the overlay */
+.integrations .integrations-grid > .card > *{
+  position: relative;
+  z-index: 1;
+}
+
+/* 4) 3D move-in hover (no layout change) */
+.integrations .integrations-grid > .card:hover{
+  transform: translateY(-6px) scale(1.02);
+  cursor: pointer;
+}
+:root[data-theme='dark'] .integrations .integrations-grid > .card:hover::before{
+  border-color: rgba(255,255,255,.36);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,.45),
+    0 0 0 1px rgba(255,255,255,.20),
+    0 0 0 1px var(--ig-in) inset;
+}
+:root:not([data-theme='dark']) .integrations .integrations-grid > .card:hover::before{
+  border-color: #c4d0e6;
+  box-shadow:
+    0 14px 32px rgba(0,0,0,.12),
+    0 0 0 1px rgba(10,20,40,.18),
+    0 0 0 1px var(--ig-in) inset;
+}
+
+  </style>
+</head>
+
+<body>
+  <section class="integrations">
+    <!-- breadcrumb / mini nav -->
+    <nav class="integrations-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/integrations" href="/integrations">Integrations</a>
+      <span class="sep">›</span>
+      <a routerLink="/integrations" href="/integrations#all">See All</a>
+    </nav>
+
+    <div class="integrations-head">
+      <div class="kicker">CHATBOT INTEGRATIONS</div>
+      <h1>Connect Novatalk with your favorite tools and apps</h1>
+    </div>
+
+    <div class="integrations-inner">
+      <div class="integrations-grid">
+        <!-- Row 1 -->
+        <div class="card">
+          <span class="ico"><img src="assets/integrations/chatwidget.svg" alt="Chat Widget"></span>
+          <h3>Chat Widget</h3>
+          <p class="lead">Engage visitors instantly with chat that answers questions and guides them across your website.</p>
+          <a class="btn-link" href="#">Check out <span aria-hidden="true">›</span></a>
+        </div>
+
+        <div class="card">
+          <span class="ico"><img src="assets/integrations/HelpDesk.svg" alt="HelpDesk"></span>
+          <h3>HelpDesk</h3>
+          <p class="lead">Sync tickets, escalate issues, and provide instant responses to keep support running smoothly.</p>
+          <a class="btn-link" href="#">Check out <span aria-hidden="true">›</span></a>
+        </div>
+
+        <div class="card">
+          <span class="ico"><img src="assets/integrations/Shopify.svg" alt="Shopify"></span>
+          <h3>Shopify</h3>
+          <p class="lead">Pull product data, check inventory, and answer customer queries directly from your store.</p>
+          <a class="btn-link" href="#">Check out <span aria-hidden="true">›</span></a>
+        </div>
+
+        <div class="card">
+          <span class="ico"><img src="assets/integrations/Freshdesk.svg" alt="Freshdesk"></span>
+          <h3>Freshdesk</h3>
+          <p class="lead">Manage tickets, respond to customers, and resolve issues faster with AI-powered support.</p>
+          <a class="btn-link" href="#">Check out <span aria-hidden="true">›</span></a>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="card">
+          <span class="ico"><img src="assets/integrations/Livechat.svg" alt="LiveChat"></span>
+          <h3>LiveChat</h3>
+          <p class="lead">Connect with website visitors instantly, deliver context-aware answers, and escalate complex cases.</p>
+          <a class="btn-link" href="#">Check out <span aria-hidden="true">›</span></a>
+        </div>
+
+        <div class="card">
+          <span class="ico"><img src="assets/integrations/Wordpress.svg" alt="WordPress"></span>
+          <h3>WordPress</h3>
+          <p class="lead">Assist site visitors, answer FAQs, and capture leads with AI chat embedded on your pages.</p>
+          <a class="btn-link" href="#">Check out <span aria-hidden="true">›</span></a>
+        </div>
+
+        <div class="card">
+          <span class="ico"><img src="assets/integrations/Zapier.svg" alt="Zapier"></span>
+          <h3>Zapier</h3>
+          <p class="lead">Automate actions across thousands of apps, triggering workflows instantly through AI chat.</p>
+          <a class="btn-link" href="#">Check out <span aria-hidden="true">›</span></a>
+        </div>
+
+        <div class="card">
+          <span class="ico"><img src="assets/integrations/Zendesk.svg" alt="Zendesk"></span>
+          <h3>Zendesk</h3>
+          <p class="lead">Respond to tickets, fetch real-time data, and escalate issues while keeping interactions secure.</p>
+          <a class="btn-link" href="#">Check out <span aria-hidden="true">›</span></a>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="card">
+          <span class="ico"><img src="assets/integrations/facebook.svg" alt="Facebook Messenger"></span>
+          <h3>Facebook Messenger</h3>
+          <p class="lead">Engage through Messenger with real-time, precise, and actionable replies.</p>
+          <a class="btn-link" href="#">Check out <span aria-hidden="true">›</span></a>
+        </div>
+
+        <div class="card">
+          <span class="ico"><img src="assets/integrations/Slack.svg" alt="Slack"></span>
+          <h3>Slack</h3>
+          <p class="lead">Execute tasks, retrieve business data, and coordinate actions instantly within your team’s channels.</p>
+          <a class="btn-link" href="#">Check out <span aria-hidden="true">›</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA below the section -->
+  <br><br><br><br><br>
+  <app-subscribe-bar></app-subscribe-bar>
+</body>
+</html>

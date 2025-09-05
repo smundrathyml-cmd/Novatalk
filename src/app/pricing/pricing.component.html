@@ -1,0 +1,110 @@
+<br>
+<br>
+<br>
+<section class="container pricing-section">
+  <h2 class="pricing-title">Simple pricing for any stage</h2>
+  
+  <p class="lead pricing-sub">Pay for what you use. Grow on your terms</p>
+<br>
+  <div class="billing-toggle">
+    <button type="button" class="pill active">Month</button>
+    <button type="button" class="pill">Year</button>
+  </div>
+
+  <!-- Fixed 1028 × ~734 frame per design -->
+  <div class="pricing-frame">
+    <!-- LEFT (Starter) -->
+    <article class="price-card small">
+      <header class="head">
+        <div class="plan">Starter</div>
+        <div class="meta">For individuals &amp; small teams</div>
+      </header>
+
+      <div class="body">
+        <div class="price"><span class="big">$35</span><span class="unit">/month</span></div>
+        <ul class="features">
+          <li>Everything in Free</li>
+          <li>Unlimited Flows &amp; Assistants</li>
+          <li>10,000 Predictions / month</li>
+          <li>1GB Storage</li>
+          <li>Community Support</li>
+        </ul>
+        <a class="btn primary cta">Get Started</a>
+      </div>
+    </article>
+
+    <!-- CENTER (Enterprise / Featured) -->
+    <article class="price-card featured">
+      <header class="head">
+        <div class="plan">Enterprise</div>
+        <div class="meta">For large organizations</div>
+      </header>
+
+      <div class="body">
+        <div class="custom-title">Contact Us</div>
+        <ul class="features">
+          <li>On-Premise Deployment</li>
+          <li>Air-gapped Environments</li>
+          <li>SSO &amp; SAML</li>
+          <li>LDAP &amp; RBAC</li>
+          <li>Versioning</li>
+          <li>Audit Logs</li>
+          <li>99.99% Uptime SLA</li>
+          <li>Personalized Support</li>
+        </ul>
+        <a class="btn cta">Contact Us</a>
+      </div>
+    </article>
+
+    <!-- RIGHT (Pro) -->
+    <article class="price-card small">
+      <header class="head">
+        <div class="plan">Pro</div>
+        <div class="meta">For medium-sized businesses</div>
+      </header>
+
+      <div class="body">
+        <div class="price"><span class="big">$65</span><span class="unit">/month</span></div>
+        <ul class="features">
+          <li>Everything in Starter</li>
+          <li>50,000 Predictions / month</li>
+          <li>10GB Storage</li>
+          <li>Unlimited Workspaces</li>
+          <li>5 Users (+ $15/user/month)</li>
+          <li>Admin Roles &amp; Permissions</li>
+          <li>Priority Support</li>
+        </ul>
+        <a class="btn primary cta">Get Started</a>
+      </div>
+    </article>
+  </div>
+<script>
+(function() {
+  function equalizePricingHeights() {
+    const cards = document.querySelectorAll('.pricing-section .price-card');
+    if (!cards.length) return;
+
+    // Reset first so we measure natural content height
+    cards.forEach(c => c.style.removeProperty('height'));
+
+    // Measure tallest natural height
+    let max = 0;
+    cards.forEach(c => { max = Math.max(max, c.offsetHeight); });
+
+    // Apply equal height (with !important to beat older rules if any remain)
+    cards.forEach(c => c.style.setProperty('height', max + 'px', 'important'));
+  }
+
+  // Run on load and on resize
+  window.addEventListener('load', equalizePricingHeights);
+  window.addEventListener('resize', () => {
+    // debounce a hair for smoother behavior
+    window.requestAnimationFrame(equalizePricingHeights);
+  });
+})();
+</script>
+<br>
+<br>
+<br>
+  <app-subscribe-bar></app-subscribe-bar>
+</section>

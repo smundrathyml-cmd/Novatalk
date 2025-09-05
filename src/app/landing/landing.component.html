@@ -1,0 +1,371 @@
+<br>
+<br>
+
+
+<section class="hero">
+  <h1>Your AI that knows <br> your business</h1>
+  <p class="lead">
+    Secured LLM-powered Agentic AI, providing precise, actionable insights and responses within your systems.
+  </p>
+
+  <div class="hero-cta">
+    <form class="subscribe-form">
+      <input type="email" placeholder="Enter your business email" required />
+      <button type="submit" class="btn primary">Sign Up</button>
+    </form>
+    <div class="hero-meta">
+      <span> Free 7-day trial</span>
+      <span> No credit card required</span>
+      <span> 100+ businesses trust Novatalk AI</span>
+    </div>
+  </div>
+</section>
+<br>
+<br>
+
+<!-- HERO CHAT: sits under the Free-trial meta -->
+<section class="container hero-chat">
+  <div class="hc-window">
+    <div #heroChatBody class="hc-body">
+      <div *ngFor="let m of heroChatMsgs" class="hc-row" [class.user]="m.from==='user'">
+        <img
+          class="hc-avatar"
+          [src]="m.from==='bot' ? botAvatar : userAvatar"
+          [alt]="m.from==='bot' ? 'Novatalk' : 'Business user'">
+
+        <div class="hc-col">
+          <div class="hc-label">{{ m.label }}</div>
+          <div class="hc-bubble" [class.user]="m.from==='user'">{{ m.text }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- <app-subscribe-bar></app-subscribe-bar> -->
+
+<section class="container specs-row">
+  <div class="badges rail ruled">
+    <div><img class="spec-ico" src="assets/icons/Advanced AI Training.svg" alt=""> Advanced AI training</div>
+    <div><img class="spec-ico" src="assets/icons/Instant AI.svg" alt=""> Instant AI chatbot setup</div>
+    <div><img class="spec-ico" src="assets/icons/Ai Generated.svg" alt=""> AI-generated replies</div>
+    <div><img class="spec-ico" src="assets/icons/Ai Powered.svg" alt=""> AI-powered customer service</div>
+    <div><img class="spec-ico" src="assets/icons/Multi channel.svg" alt=""> Multichannel communication</div>
+  </div>
+</section>
+
+
+
+<section class="container logos-section">
+  <h2 class="logos-title">Companies using our chatbot</h2>
+  <div id="home-logos" class="logos-rail">
+    <img src="assets/logos/Myntra.svg" alt="Myntra" class="logo-chip">
+    <img src="assets/logos/Abstract.svg" alt="Abstract" class="logo-chip">
+    <img src="assets/logos/Sale.svg" alt="Sale" class="logo-chip">
+    <img src="assets/logos/Balance.svg" alt="The Balance" class="logo-chip">
+    <img src="assets/logos/Goldlogo.svg" alt="Goldlogo" class="logo-chip">
+    <img src="assets/logos/Panda.svg" alt="Panda" class="logo-chip">
+    <img src="assets/logos/Phoenix.svg" alt="Phoenix" class="logo-chip">
+  </div>
+</section>
+
+<br>
+<br>
+<br>
+<br>
+
+<section class="container features-section">
+  <h2>Features</h2>
+
+  <div class="features-intro">
+    <p class="lead">
+      Intelligent chats that do more than respond. They monitor for risks, integrate seamlessly with your systems, provide personalized,
+      multilingual answers, and engage customers 24/7. Acting as a central knowledge hub, they deliver insights, recommend actions, and
+      secure sensitive data — turning every conversation into an opportunity to act and improve outcomes.
+    </p>
+    <p class="lead">
+      <strong>NovaTalk</strong> is an Agentic AI bot engineered for enterprises that demand accuracy, security, and deep business context.
+      Hosted entirely within your environment, it integrates directly with your systems, learns from your data, and executes complex
+      workflows—not just answers questions. Every interaction is relevant, compliant, and actionable, making NovaTalk an extension of your team.
+    </p>
+  </div>
+ 
+  <div class="carousel features-carousel" style="margin-top:0">
+    <button class="nav prev" (click)="featPage = Math.max(0, featPage-1)">‹</button>
+
+    <div class="track">
+      <div *ngFor="let page of featurePages; let i = index"
+           class="feature-grid hero-deck"
+           [style.display]="featPage===i ? 'grid' : 'none'">
+        <div class="card glass feature-card"
+             *ngFor="let f of page"
+             (click)="goFeature(f.id)"
+             style="cursor:pointer">
+          <img class="feature-media" [src]="f.img" [alt]="f.title">
+          <div class="feature-body">
+            <h3 class="feature-title">{{f.title}}</h3>
+            <p class="lead feature-desc">{{f.desc}}</p>
+            <a [routerLink]="['/features']" [fragment]="f.id" (click)="$event.stopPropagation()">See more →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="nav next" (click)="featPage = Math.min(featurePages.length-1, featPage+1)">›</button>
+  </div>
+</section>
+<br>
+<br>
+
+<app-subscribe-bar></app-subscribe-bar>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<section class="action-demo container">
+  <h2>See Novatalk in Action</h2>
+  <h3 class="subhead">Real-time answers pulled from connected systems</h3>
+<br>
+<br>
+  <!-- Fixed frame 1028×607 -->
+  <div class="demo-wrap" #demoWrap>
+    <!-- Standing rectangle 361×466 -->
+    <div class="demo-chat" #chatBox>
+      <div class="demo-header">
+  <img src="/assets/logo/novatalk-logo.png" alt="Novatalk Logo" class="demo-logo">
+</div>
+
+      <div class="body" #chatBody>
+        <div class="msg" #msgRow *ngFor="let m of messages">
+          <div class="bubble" [class.user]="m.from==='user'">{{ m.text }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outside overlay (never clipped) -->
+    <div class="outside" aria-hidden="true">
+  <div *ngFor="let h of outsideHints"
+       class="hint"
+       [class.left]="h.side==='left'"
+       [class.right]="h.side==='right'"
+       [style.top.px]="h.top"
+       [style.left.px]="h.x">
+    <div class="lead">{{ h.text }}</div>
+  </div>
+</div>
+  </div>
+</section>
+
+
+
+
+<section class="container pricing-section">
+  <h2 class="pricing-title">Simple pricing for any stage</h2>
+  
+  <p class="lead pricing-sub">Pay for what you use. Grow on your terms</p>
+<br>
+  <div class="billing-toggle">
+    <button type="button" class="pill active">Month</button>
+    <button type="button" class="pill">Year</button>
+  </div>
+
+  <!-- Fixed 1028 × ~734 frame per design -->
+  <div class="pricing-frame">
+    <!-- LEFT (Starter) -->
+    <article class="price-card small">
+      <header class="head">
+        <div class="plan">Starter</div>
+        <div class="meta">For individuals &amp; small teams</div>
+      </header>
+
+      <div class="body">
+        <div class="price"><span class="big">$35</span><span class="unit">/month</span></div>
+        <ul class="features">
+          <li>Everything in Free</li>
+          <li>Unlimited Flows &amp; Assistants</li>
+          <li>10,000 Predictions / month</li>
+          <li>1GB Storage</li>
+          <li>Community Support</li>
+        </ul>
+        <a class="btn primary cta">Get Started</a>
+      </div>
+    </article>
+
+    <!-- CENTER (Enterprise / Featured) -->
+    <article class="price-card featured">
+      <header class="head">
+        <div class="plan">Enterprise</div>
+        <div class="meta">For large organizations</div>
+      </header>
+
+      <div class="body">
+        <div class="custom-title">Contact Us</div>
+        <ul class="features">
+          <li>On-Premise Deployment</li>
+          <li>Air-gapped Environments</li>
+          <li>SSO &amp; SAML</li>
+          <li>LDAP &amp; RBAC</li>
+          <li>Versioning</li>
+          <li>Audit Logs</li>
+          <li>99.99% Uptime SLA</li>
+          <li>Personalized Support</li>
+        </ul>
+        <a class="btn cta">Contact Us</a>
+      </div>
+    </article>
+
+    <!-- RIGHT (Pro) -->
+    <article class="price-card small">
+      <header class="head">
+        <div class="plan">Pro</div>
+        <div class="meta">For medium-sized businesses</div>
+      </header>
+
+      <div class="body">
+        <div class="price"><span class="big">$65</span><span class="unit">/month</span></div>
+        <ul class="features">
+          <li>Everything in Starter</li>
+          <li>50,000 Predictions / month</li>
+          <li>10GB Storage</li>
+          <li>Unlimited Workspaces</li>
+          <li>5 Users (+ $15/user/month)</li>
+          <li>Admin Roles &amp; Permissions</li>
+          <li>Priority Support</li>
+        </ul>
+        <a class="btn primary cta">Get Started</a>
+      </div>
+    </article>
+  </div>
+<script>
+(function() {
+  function equalizePricingHeights() {
+    const cards = document.querySelectorAll('.pricing-section .price-card');
+    if (!cards.length) return;
+
+    // Reset first so we measure natural content height
+    cards.forEach(c => c.style.removeProperty('height'));
+
+    // Measure tallest natural height
+    let max = 0;
+    cards.forEach(c => { max = Math.max(max, c.offsetHeight); });
+
+    // Apply equal height (with !important to beat older rules if any remain)
+    cards.forEach(c => c.style.setProperty('height', max + 'px', 'important'));
+  }
+
+  // Run on load and on resize
+  window.addEventListener('load', equalizePricingHeights);
+  window.addEventListener('resize', () => {
+    // debounce a hair for smoother behavior
+    window.requestAnimationFrame(equalizePricingHeights);
+  });
+})();
+</script>
+</section>
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!-- ===============================
+     TESTIMONIALS (3-up carousel)
+     =============================== -->
+<section class="home-test-wrap">
+  <h2>Loved by modern teams</h2>
+  <p class="lead">What our customers are saying</p>
+
+  <div class="carousel home-test">
+    <!-- Prev -->
+    <button
+      type="button"
+      class="nav prev"
+      aria-label="Previous testimonials"
+      (click)="testPage = Math.max(0, testPage - 1)">
+      ‹
+    </button>
+
+    <!-- Pages (each page = 3 fixed cards) -->
+    <div class="track">
+      <div
+        class="page"
+        *ngFor="let page of testPages; let i = index"
+        [style.display]="testPage === i ? 'grid' : 'none'">
+        <article class="card" *ngFor="let t of page">
+          <div class="stars">{{ t.stars }}</div>
+          <p class="lead">{{ t.text }}</p>
+          <strong>{{ t.author }}</strong>
+        </article>
+      </div>
+    </div>
+
+    <!-- Next -->
+    <button
+      type="button"
+      class="nav next"
+      aria-label="Next testimonials"
+      (click)="testPage = Math.min(testPages.length - 1, testPage + 1)">
+      ›
+    </button>
+  </div>
+</section>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!-- ===============================
+     FAQs (title between lines + pill accordions)
+     =============================== -->
+<section class="faqs-section">
+  <div class="faqs-heading" (click)="faqsOpen = !faqsOpen" style="cursor:pointer">
+    <span class="line"></span>
+    <h2>
+      FAQs
+      <span
+        style="display:inline-block; margin-left:6px; transition:transform .2s"
+        [style.transform]="faqsOpen ? 'rotate(180deg)' : 'rotate(0deg)'">▾</span>
+    </h2>
+    <span class="line"></span>
+  </div>
+
+  <div class="faqs-list" *ngIf="faqsOpen">
+    <details *ngFor="let q of [
+      {q:'What is NovaTalk Bot?', a:'Agentic AI that executes multi-step tasks, delivers context-aware insights, and acts like a digital team member.'},
+      {q:'What makes NovaTalk different?', a:'Deep system integrations, automated workflows, and continuous learning for precise outputs.'},
+      {q:'How does it integrate?', a:'Real-time connectors to ERP, CRM, ticketing, inventory, and custom systems with compliance.'},
+      {q:'Can it handle complex workflows?', a:'Yes — autonomous multi-step processes reduce Level 1 load.'},
+      {q:'How does it ensure accuracy?', a:'Enterprise-trained LLMs with RAG + continual learning.'},
+      {q:'Is multilingual supported?', a:'Yes, high-quality context-aware interactions across languages.'},
+      {q:'Is it secure?', a:'Runs within your environment; encryption and global data privacy compliance.'},
+      {q:'Does it personalize?', a:'Remembers interactions and adapts to user workflows.'},
+      {q:'How fast to implement?', a:'Rapid deployment via pre-built connectors and APIs.'},
+      {q:'What value does it bring?', a:'Automates workflows, reduces bottlenecks, and improves engagement and scale.'}
+    ]">
+      <summary>{{ q.q }}</summary>
+      <p class="lead">{{ q.a }}</p>
+    </details>
+  </div>
+</section>
+<br>
+<br>
+<br>
+
+
+
+

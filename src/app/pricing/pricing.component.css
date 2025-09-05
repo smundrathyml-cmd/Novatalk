@@ -1,0 +1,8 @@
+
+/* Scoped enhancements for pricing */
+:host .pricing-frame{ align-items:stretch; }
+:host .price-card{ display:flex; flex-direction:column; }
+:host .price-card .body{ display:flex; flex-direction:column; height:100%; }
+:host .price-card .cta{ margin-top:auto; }        /* button at bottom */
+:host .price{ justify-content:flex-start; }       /* left align price */
+:host .price .unit{ margin-left:8px; }            /* closer /month */

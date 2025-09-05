@@ -1,0 +1,47 @@
+
+/* Scoped Integrations styles (dark+light) */
+:host{
+  --box-bg-dark: #0b0b0b;
+  --box-bg-light: #f7f8fb;
+  --box-border-dark: rgba(255,255,255,.10);
+  --box-border-light: #e8eef6;
+  --hover-ring-dark: rgba(42,102,255,.35);
+  --hover-ring-light: rgba(0,0,0,.10);
+  display:block;
+}
+
+/* Grid keeps existing structure; styles only the cards */
+.integrations .integrations-grid{
+  align-items:stretch;
+}
+.integrations .integrations-grid .card{
+  border:1px solid var(--box-border-dark);
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+  padding:16px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+  will-change:transform, box-shadow;
+}
+:host-context(:root:not([data-theme='dark'])) .integrations .integrations-grid .card{
+  border-color:var(--box-border-light);
+  background:linear-gradient(180deg, #ffffff, var(--box-bg-light));
+  box-shadow:none;
+}
+/* Hover 3D */
+.integrations .integrations-grid .card:hover{
+  transform:translateY(-6px);
+  box-shadow:
+    0 16px 40px var(--hover-ring-dark),
+    inset 0 0 0 1px rgba(255,255,255,.05);
+  border-color:#2a66ff;
+}
+:host-context(:root:not([data-theme='dark'])) .integrations .integrations-grid .card:hover{
+  box-shadow:0 16px 40px var(--hover-ring-light);
+  border-color:#b7c0d0;
+}
+
+/* Keep inner layout stable & left aligned */
+.integrations .integrations-grid .ico{ margin:0 0 10px 0; }
+.integrations .integrations-grid .btn-link{ margin-top:auto; }
+.integrations .integrations-grid *{ text-align:left; }

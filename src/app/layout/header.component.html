@@ -1,0 +1,183 @@
+<header class="header">
+  <style>
+    /* ===== Base nav (dark-mode default) ===== */
+    .header{position:relative;z-index:60}
+    .header .row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .header .menu{display:flex;align-items:center;gap:24px}
+
+    .header .menu>a,
+    .header .drop__toggle{
+      position:relative;display:inline-flex;align-items:center;gap:6px;
+      padding:8px 4px;border:0;background:none;cursor:pointer;
+      color:#dbe7ff;text-decoration:none;font-weight:600;font-size:14px;line-height:1;
+      transition:color .15s ease;
+    }
+    .header .menu>a.active,
+    .header .drop__toggle.active{color:#ffffff}
+    .caret{display:inline-block;transform:translateY(-1px) rotate(0);transition:transform .18s}
+    .drop.open .caret{transform:translateY(-1px) rotate(180deg)}
+    .drop{position:relative}
+
+    .panel{
+      position:absolute;left:0;top:100%;
+      width:max-content;border-radius:10px;overflow:hidden;z-index:50;
+      background:linear-gradient(180deg,rgba(207,228,255,.75) 0%,
+                                         rgba(55,85,120,.85) 45%,
+                                         rgba(12,26,42,.96) 100%);
+      border:1px solid rgba(207,228,255,.18);
+      box-shadow:0 16px 40px rgba(0,0,0,.45);
+      backdrop-filter:saturate(120%) blur(2px);
+    }
+    .panel::before{content:"";position:absolute;left:0;right:0;top:-6px;height:6px} /* hover buffer */
+
+    .panel a{
+      display:block;padding:8px 12px;font-size:14px;line-height:20px;
+      color:#eef6ff;text-decoration:none;white-space:nowrap;
+      transition:background .12s ease,color .12s ease;
+    }
+    .panel a:hover{background:rgba(255,255,255,.07)}
+
+    /* Sizes to match spec */
+    .panel--integrations{width:436px;max-width:92vw}
+    .panel__body.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2px 22px;padding:8px 12px 0}
+    .panel__footer{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-top:1px solid rgba(207,228,255,.15);background:#0e7cf2;color:#fff;font-weight:700}
+    .panel__footer .chev{font-size:18px;line-height:1}
+
+    .panel--resources{width:177px}
+    .panel--resources a{padding:8px 12px}
+
+    /* ===== LIGHT MODE OVERRIDES ===== */
+    :root:not([data-theme='dark']) .header .menu>a,
+    :root:not([data-theme='dark']) .header .drop__toggle{color:#000 !important;}
+
+    :root:not([data-theme='dark']) .header .menu>a:hover,
+    :root:not([data-theme='dark']) .header .menu>a:focus,
+    :root:not([data-theme='dark']) .header .menu>a:active,
+    :root:not([data-theme='dark']) .header .drop__toggle:hover,
+    :root:not([data-theme='dark']) .header .drop__toggle:focus,
+    :root:not([data-theme='dark']) .header .drop__toggle:active{color:#000 !important;}
+
+    :root:not([data-theme='dark']) .header .menu>a.active,
+    :root:not([data-theme='dark']) .header .drop__toggle.active{color:#000 !important;}
+
+    :root:not([data-theme='dark']) .panel{
+      background:#fff;border:1px solid #e5e7eb;box-shadow:0 14px 34px rgba(0,0,0,.18);backdrop-filter:none;
+    }
+    :root:not([data-theme='dark']) .panel a{color:#000;}
+    :root:not([data-theme='dark']) .panel a:hover{background:#f5f5f5;}
+    :root:not([data-theme='dark']) .panel__footer{background:#0e7cf2;color:#fff;}
+
+    :root:not([data-theme='dark']) .header ::selection{background:#cde6ff;color:#000;}
+    :root[data-theme='dark'] .header ::selection{background:#1e3a8a;color:#fff;}
+
+    /* Unify link & toggle boxes so headings align on one row */
+    .header .menu > a,
+    .header .menu > .drop > .drop__toggle{
+      height:28px !important;
+      line-height:28px !important;
+      padding:0 8px !important;
+
+      display:inline-flex !important;
+      align-items:center !important;
+      vertical-align:middle !important;
+
+      font-weight:600 !important;
+      font-size:14px !important;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif !important;
+    }
+
+    .header .menu > .drop > .drop__toggle{
+      margin:0 !important;border:0 !important;background:none !important;
+      -webkit-appearance:none !important;appearance:none !important;
+    }
+    .header .menu{flex-wrap:nowrap;} /* keep in one row */
+
+    .header .menu > .drop{display:inline-block;vertical-align:middle;}
+
+    /* Caret baseline fix: remove the tiny upward nudge and just rotate */
+    .header .menu .drop__toggle .caret{
+      font-size:12px;line-height:1;margin-left:4px;
+      position:relative;top:0;                      /* <- key change */
+      transform:rotate(0deg) translateY(0) !important;  /* override previous translateY(-1px) */
+    }
+    .drop.open .caret{transform:rotate(180deg) translateY(0) !important;}
+
+    /* ====== OVERRIDE: Right-align "See All" in Integrations ====== */
+    .panel--integrations .panel__footer{
+      width:100%;                 /* let the footer span full panel */
+      justify-content:flex-end;   /* push content to the right */
+      text-align:right;           /* ensure text hugs the right edge */
+    }
+
+    /* ensure colors don’t flip in light mode */
+    :root:not([data-theme='dark']) .header .menu > a,
+    :root:not([data-theme='dark']) .header .menu > .drop > .drop__toggle{ color:#000 !important; }
+    :root[data-theme='dark'] .header .menu > a,
+    :root[data-theme='dark'] .header .menu > .drop > .drop__toggle{ color:#dbe7ff !important; }
+  </style>
+
+  <div class="container row">
+    <!-- Brand -->
+    <a routerLink="/" class="nav brand" aria-label="Novatalk">
+      <img class="brand-logo" src="assets/logo/novatalk-logo.png" alt="Novatalk" />
+    </a>
+
+    <!-- Menu -->
+    <nav class="nav menu" role="menubar">
+      <a routerLink="/how-it-works" [class.active]="active?.startsWith('/how-it-works')" role="menuitem">How it Works</a>
+      <a routerLink="/features"      [class.active]="active?.startsWith('/features')"      role="menuitem">Features</a>
+      <a routerLink="/pricing"       [class.active]="active?.startsWith('/pricing')"       role="menuitem">Pricing</a>
+
+      <!-- Integrations dropdown -->
+      <div class="drop" (mouseenter)="intOpen=true" (mouseleave)="intOpen=false" [class.open]="intOpen">
+        <button type="button" class="drop__toggle"
+                [attr.aria-expanded]="intOpen" aria-haspopup="true"
+                (click)="intOpen=!intOpen"
+                [class.active]="active?.startsWith('/integrations')">
+          Integrations <span class="caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="panel panel--integrations" *ngIf="intOpen" role="menu">
+          <div class="panel__body grid-2">
+            <a role="menuitem" href="#" (click)="$event.preventDefault()">Chat Widget</a>
+            <a role="menuitem" href="#" (click)="$event.preventDefault()">WordPress</a>
+            <a role="menuitem" href="#" (click)="$event.preventDefault()">Help Desk</a>
+            <a role="menuitem" href="#" (click)="$event.preventDefault()">Zapier</a>
+            <a role="menuitem" href="#" (click)="$event.preventDefault()">Shopify</a>
+            <a role="menuitem" href="#" (click)="$event.preventDefault()">Zendesk</a>
+            <a role="menuitem" href="#" (click)="$event.preventDefault()">Freshdesk</a>
+            <a role="menuitem" href="#" (click)="$event.preventDefault()">Slack</a>
+            <a role="menuitem" href="#" (click)="$event.preventDefault()">LiveChat</a>
+            <a role="menuitem" href="#" (click)="$event.preventDefault()">Facebook Messenger</a>
+          </div>
+          <a class="panel__footer" routerLink="/integrations" (click)="intOpen=false">
+            See All <span class="chev" aria-hidden="true">›</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Resources dropdown -->
+      <div class="drop" (mouseenter)="resOpen=true" (mouseleave)="resOpen=false" [class.open]="resOpen">
+        <button type="button" class="drop__toggle"
+                [attr.aria-expanded]="resOpen" aria-haspopup="true"
+                (click)="resOpen=!resOpen"
+                [class.active]="active?.startsWith('/resources')
+                                || active?.startsWith('/case-studies')
+                                || active?.startsWith('/help-center')
+                                || active?.startsWith('/api')">
+          Resources <span class="caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="panel panel--resources" *ngIf="resOpen" role="menu" aria-label="Resources">
+          <a role="menuitem" routerLink="/resources"    (click)="resOpen=false">Case Studies</a>
+          <a role="menuitem" routerLink="/help-center"  (click)="resOpen=false">Help Center</a>
+          <a role="menuitem" routerLink="/api"          (click)="resOpen=false">API &amp; Developers</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Right side -->
+    <div class="nav" style="display:flex;align-items:center;gap:10px">
+      <app-theme-toggle></app-theme-toggle>
+<a class="btn primary" href="#">Login</a>
+    </div>
+  </div>
+</header>
