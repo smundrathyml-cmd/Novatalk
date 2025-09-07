@@ -2362,6 +2362,198 @@ a.btn.primary{
   margin-left: 4px !important;              /* was ~10px earlier */
   margin-bottom: 4px !important;
 }
+/* ===== Header nav — make links & dropdown toggles identical (FINAL) ===== */
+
+/* Identical inline boxes */
+.header .nav.menu > a,
+.header .nav.menu > .drop > .drop__toggle{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+
+  height:28px !important;
+  line-height:28px !important;
+  padding:0 8px !important;
+  border-radius:6px !important;
+
+  border:0 !important;
+  background:transparent !important;
+  cursor:pointer !important;
+
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif !important;
+  font-weight:600 !important;
+  font-size:14px !important;
+
+  -webkit-appearance:none !important;
+  appearance:none !important;
+  vertical-align:middle !important;     /* keep baseline consistent */
+}
+
+/* Ensure the wrapper aligns on the same baseline */
+.header .nav.menu > .drop{
+  display:inline-flex !important;
+  align-items:center !important;
+}
+
+/* Caret baseline: remove micro-nudge */
+.header .nav.menu .drop__toggle .caret{
+  position:relative !important;
+  top:0 !important;
+  transform:rotate(0deg) !important;
+  line-height:1 !important;
+}
+.header .nav.menu .drop.open .caret{
+  transform:rotate(180deg) !important;
+}
+
+/* Active state for button should match link pill height */
+:root:not([data-theme='dark']) .header .nav.menu > .drop > .drop__toggle.active{
+  background:#f1f5fa !important;  /* same look as .nav.menu a.active */
+}
+/* FINAL ALIGNMENT NUDGE — keeps Integrations/Resources on same row */
+.header .nav.menu > a,
+.header .nav.menu > .drop > .drop__toggle{
+  height: 28px !important;
+  line-height: 28px !important;
+  padding: 0 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+/* micro-nudge only for the button version (Windows/Chrome font metrics) */
+.header .nav.menu > .drop > .drop__toggle{
+  position: relative !important;
+  top: -1px !important;              /* try -1px; if still low, use -2px */
+}
+
+/* keep the caret visually centered next to the label */
+.header .nav.menu .drop__toggle .caret{
+  line-height: 1 !important;
+  position: relative !important;
+  top: 0 !important;
+  transform: rotate(0deg) !important;
+}
+.header .nav.menu .drop.open .caret{ transform: rotate(180deg) !important; }
+/* ====== FINAL: keep Integrations/Resources perfectly level ====== */
+
+/* 1) Remove padding that changes the drop wrapper's baseline height */
+.menu .drop{
+  padding-bottom: 0 !important;               /* stop baseline wobble */
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle !important;
+}
+
+/* Put the hover buffer on the panel instead (invisible top “bridge”) */
+.menu .panel{
+  top: calc(100% + 0px) !important;
+}
+.menu .panel::before{
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: -8px; height: 8px;  /* increase buffer if needed */
+}
+
+/* 2) Make link and dropdown boxes identical */
+.header .nav.menu > a,
+.header .nav.menu > .drop > .drop__toggle{
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 28px !important;
+  line-height: 28px !important;
+  padding: 0 8px !important;
+  font: 600 14px/28px Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif !important;
+  border-radius: 6px !important;
+}
+
+/* 3) Micro-nudge the button label for Windows/Chrome text metrics */
+.header .nav.menu > .drop > .drop__toggle{
+  position: relative !important;
+  top: -1px !important;              /* if still low, try -1.5px via translateY */
+  transform: translateY(0) !important;
+}
+
+/* If your display shows a half-pixel drift, use this instead of top:-1px: */
+/* .header .nav.menu > .drop > .drop__toggle{ transform: translateY(-0.5px) !important; top:0 !important; } */
+
+/* 4) Keep caret centered next to text */
+.header .nav.menu .drop__toggle .caret{
+  position: relative !important;
+  top: 0 !important;
+  line-height: 1 !important;
+  transform: rotate(0deg) !important;
+}
+.header .nav.menu .drop.open .caret{ transform: rotate(180deg) !important; }
+/* MICRO-FIX: perfect visual level for dropdown labels */
+.header .nav.menu > .drop > .drop__toggle{
+  position: relative !important;
+  transform: translateY(-0.7px) !important; /* try -0.5px first */
+  top: 0 !important;                         /* ensure transform is the only nudge */
+}
+
+/* keep caret centered next to label */
+.header .nav.menu .drop__toggle .caret{
+  position: relative !important;
+  top: 0 !important;
+  transform: rotate(0deg) !important;
+}
+.header .nav.menu .drop.open .caret{ transform: rotate(180deg) !important; }
+/* ===== Features page subtle card background ===== */
+.flow-card {
+  background: rgba(151, 135, 135, 0.02);   /* very light black tint */
+  border-radius: 12px;
+  padding: 16px;
+  transition: background .25s ease, box-shadow .25s ease;
+}
+
+/* In dark mode, use a light white tint instead */
+:root[data-theme='dark'] .flow-card {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Optional hover emphasis */
+.flow-card:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+:root[data-theme='dark'] .flow-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+/* ===== Features page subtle card background ===== */
+.flow-card {
+  background: rgba(174, 29, 29, 0.02);   /* very light black tint */
+  border-radius: 12px;
+  padding: 16px;
+  transition: background .25s ease, box-shadow .25s ease;
+}
+
+/* In dark mode, use a light white tint instead */
+:root[data-theme='dark'] .flow-card {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Optional hover emphasis */
+.flow-card:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+:root[data-theme='dark'] .flow-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+/* === FINAL: Features page subtle card background === */
+.features-hero ~ .container .flow-card {
+  background: rgba(226, 203, 203, 0.025) !important;  /* faint black tint */
+  border-radius: 14px !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+}
+
+/* Dark mode variant */
+:root[data-theme='dark'] .features-hero ~ .container .flow-card {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  box-shadow: 0 1px 3px rgba(255,255,255,0.05) !important;
+}
 
 
 
