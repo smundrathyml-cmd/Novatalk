@@ -2554,6 +2554,167 @@ a.btn.primary{
   border: 1px solid rgba(255,255,255,0.08) !important;
   box-shadow: 0 1px 3px rgba(255,255,255,0.05) !important;
 }
+/* ===== THEME TOGGLE — spacing, visibility, no clipping (override) ===== */
+
+/* Host: keep it a compact row with a margin before Login */
+.header app-theme-toggle{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  height:28px !important;
+  overflow:visible !important;     /* never crop */
+  margin-right:12px !important;    /* ← space from Login */
+  vertical-align:middle !important;
+}
+
+/* Label (left of pill) — same visual size as header links */
+.header app-theme-toggle::before{
+  content:"Light";
+  font:600 14px/1.1 Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", sans-serif !important;
+  color:var(--ink) !important;
+  min-width:44px;                  /* avoids jitter on toggle */
+  text-align:left;
+}
+:root[data-theme='dark'] .header app-theme-toggle::before{ content:"Dark"; }
+
+/* Pill/track — contrasty in light, solid in dark; never clipped */
+.header app-theme-toggle .theme-toggle{
+  position:relative !important;
+  width:52px !important;
+  height:28px !important;
+  padding:3px !important;
+  border-radius:9999px !important;
+  overflow:visible !important;                     /* stop cut edge */
+  cursor:pointer !important;
+
+  /* Light mode: clearer contrast */
+  background:#eef2f8 !important;
+  border:1px solid #c9d3e6 !important;
+  box-shadow:0 1px 2px rgba(0,0,0,.06) inset !important;
+}
+
+/* Dark mode track */
+:root[data-theme='dark'] .header app-theme-toggle .theme-toggle{
+  background:#0e1627 !important;
+  border:1px solid #2a3550 !important;
+  box-shadow:0 1px 2px rgba(255,255,255,.06) inset !important;
+}
+
+/* Knob with big, high-contrast icon */
+.header app-theme-toggle .theme-toggle .knob{
+  position:absolute !important;
+  top:3px !important;
+  left:3px !important;
+  width:22px !important;
+  height:22px !important;
+  border-radius:50% !important;
+  background:#ffffff !important;
+  display:grid !important;
+  place-items:center !important;
+  font-size:16px !important;       /* larger icon */
+  line-height:1 !important;
+  color:#111 !important;
+  box-shadow:0 1px 2px rgba(0,0,0,.22) !important;
+  transition:left .25s ease, background .25s ease, color .25s ease !important;
+}
+
+/* Icon glyphs */
+.header app-theme-toggle .theme-toggle .knob::before{ content:"☀"; }   /* sun */
+:root[data-theme='dark'] .header app-theme-toggle .theme-toggle .knob::before{ content:"☾"; } /* moon */
+
+/* Slide position + dark knob palette */
+:root[data-theme='dark'] .header app-theme-toggle .theme-toggle .knob{
+  left:27px !important;
+  background:#dbe7ff !important;
+  color:#0b1220 !important;
+}
+
+/* Keep old internal labels hidden if they exist */
+.header app-theme-toggle .label,
+.header app-theme-toggle .text{ display:none !important; }
+/* === Header right-rail spacing fix (beats the inline gap) === */
+.header .container .nav[style]{
+  gap: 18px !important;            /* breathing room between toggle and Login */
+}
+
+/* A little extra separation specifically after the toggle */
+.header app-theme-toggle{
+  margin-inline-end: 12px !important; /* pushes Login away from the pill */
+  position: relative;                 /* keeps it above Login's glow */
+  z-index: 1;
+}
+/* ===== HEADER RIGHT RAIL — FINAL SPACING + VISIBILITY ===== */
+/* Make the right rail (toggle + Login) keep a wider gap, no matter what */
+.header .container > .nav:last-child{
+  gap: 22px !important;         /* space between toggle and Login */
+  align-items: center !important;
+}
+
+/* Extra safety: even if some inline gap wins, keep a margin after the toggle */
+.header app-theme-toggle{
+  margin-right: 12px !important; /* guarantees separation from Login */
+  position: relative !important;
+  z-index: 2 !important;         /* sits above Login’s blue glow */
+}
+
+/* And if a glow still feels “attached”, push the Login button itself a bit */
+.header .container > .nav:last-child > a.btn.primary{
+  margin-left: 6px !important;   /* micro-nudge to break the visual merge */
+}
+
+/* (Optional) soften the glow on the side closest to the toggle without
+   changing the button’s overall look. This keeps the “halo” from
+   bleeding under the pill. */
+.header .container > .nav:last-child > a.btn.primary{
+  box-shadow: 0 6px 20px rgba(14,124,242,.32),
+              0 0 0 1px rgba(14,124,242,.10) inset !important;
+}
+/* ===== Header right rail: bullet-proof separation (wins over inline gap) ===== */
+
+/* The right-rail in your header has an inline style attribute.
+   Target it explicitly and space the children with margins. */
+.header .container .nav[style] app-theme-toggle{
+  margin-right: 16px !important;   /* hard space after the toggle */
+  position: relative !important;
+  z-index: 2 !important;           /* sit above the Login glow */
+}
+
+.header .container .nav[style] > a.btn.primary{
+  margin-left: 16px !important;    /* hard space before Login */
+  box-shadow: 0 6px 20px rgba(14,124,242,.32) !important;  /* tighter glow */
+}
+
+/* Prevent the button’s shadow from visually merging under the toggle */
+.header .container .nav[style]{ isolation: isolate !important; }
+/* ===== FINAL HEADER SPACING FIX: toggle vs Login ===== */
+
+/* Force toggle to keep extra breathing room */
+.header .container .nav[style] app-theme-toggle{
+  margin-right: 28px !important;   /* increase separation */
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Optional: also push Login itself slightly */
+.header .container .nav[style] > a.btn.primary{
+  margin-left: 4px !important;     /* tiny nudge, if needed */
+}
+/* ===== Toggle vs Login: final separation & glow fix ===== */
+
+/* Force toggle further away */
+.header .container .nav[style] app-theme-toggle{
+  margin-right: 60px !important;   /* stronger spacing */
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Adjust Login glow so it doesn’t bleed into the toggle */
+.header .container .nav[style] > a.btn.primary{
+  margin-left: 0 !important; /* reset extra nudge */
+  box-shadow:
+    0 6px 20px rgba(14,124,242,.35),
+    4px 0 12px rgba(14,124,242,.15) inset !important;
+}
 
 
 
