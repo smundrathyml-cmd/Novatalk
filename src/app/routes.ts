@@ -6,6 +6,9 @@ import { ResourcesComponent } from './resources/resources.component';
 import { PricingComponent } from './pricing/pricing.component';
 import { IntegrationsComponent } from './integrations/integrations.component';
 import { CaseStudiesComponent } from './case-studies/case-studies.component';
+import { FaqsComponent } from './Faqs/faqs.component';
+import { ContactUsComponent } from './contactus/contactus.component';
+
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -15,5 +18,7 @@ export const routes: Routes = [
   { path: 'pricing', component: PricingComponent },
   { path: 'integrations', component: IntegrationsComponent },
   {path: 'case-studies', component: CaseStudiesComponent},
+  {path: 'faqs', component: FaqsComponent},
+   {path: 'contactus', component: ContactUsComponent},
   { path: '**', redirectTo: '' }
 ];

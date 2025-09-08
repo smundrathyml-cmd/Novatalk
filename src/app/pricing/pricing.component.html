@@ -1,19 +1,33 @@
-<br>
-<br>
-<br>
 <section class="container pricing-section">
   <h2 class="pricing-title">Simple pricing for any stage</h2>
-  
   <p class="lead pricing-sub">Pay for what you use. Grow on your terms</p>
-<br>
+  <br>
+
+  <!-- Billing toggle -->
   <div class="billing-toggle">
-    <button type="button" class="pill active">Month</button>
-    <button type="button" class="pill">Year</button>
+    <button
+      type="button"
+      class="pill"
+      [class.active]="billing === 'month'"
+      (click)="setBilling('month')">
+      Month
+    </button>
+
+    <button
+      type="button"
+      class="pill"
+      [class.active]="billing === 'year'"
+      (click)="setBilling('year')">
+      Year
+    </button>
+
+    <!-- lives next to year toggle -->
+    <span class="save-note">Save 20%</span>
   </div>
 
-  <!-- Fixed 1028 × ~734 frame per design -->
+  <!-- Cards -->
   <div class="pricing-frame">
-    <!-- LEFT (Starter) -->
+    <!-- STARTER -->
     <article class="price-card small">
       <header class="head">
         <div class="plan">Starter</div>
@@ -21,7 +35,11 @@
       </header>
 
       <div class="body">
-        <div class="price"><span class="big">$35</span><span class="unit">/month</span></div>
+        <div class="price">
+          <span class="big">${{ displayedPrice('starter') | number:'1.0-0' }}</span>
+          <span class="unit">/month</span>
+        </div>
+
         <ul class="features">
           <li>Everything in Free</li>
           <li>Unlimited Flows &amp; Assistants</li>
@@ -29,11 +47,15 @@
           <li>1GB Storage</li>
           <li>Community Support</li>
         </ul>
-        <a class="btn primary cta">Get Started</a>
+
+        <div class="card-footer">
+          <!-- <div class="view-all"><a routerLink="/pricing">View all ›</a></div> -->
+          <a class="btn primary cta">Get Started</a>
+        </div>
       </div>
     </article>
 
-    <!-- CENTER (Enterprise / Featured) -->
+    <!-- ENTERPRISE -->
     <article class="price-card featured">
       <header class="head">
         <div class="plan">Enterprise</div>
@@ -52,11 +74,19 @@
           <li>99.99% Uptime SLA</li>
           <li>Personalized Support</li>
         </ul>
-        <a class="btn cta">Contact Us</a>
+
+        <div class="card-footer">
+          <!-- <div class="view-all"><a routerLink="/pricing">View all ›</a></div> -->
+          <!-- <a class="btn primary cta"routerLink="/contactus"
+   >
+  Contact Us</a> -->
+  <a class="btn primary cta" routerLink="/contactus" routerLinkActive="active">
+         Contact Us <span aria-hidden="true"></span></a>
+        </div>
       </div>
     </article>
 
-    <!-- RIGHT (Pro) -->
+    <!-- PRO -->
     <article class="price-card small">
       <header class="head">
         <div class="plan">Pro</div>
@@ -64,7 +94,11 @@
       </header>
 
       <div class="body">
-        <div class="price"><span class="big">$65</span><span class="unit">/month</span></div>
+        <div class="price">
+          <span class="big">${{ displayedPrice('pro') | number:'1.0-0' }}</span>
+          <span class="unit">/month</span>
+        </div>
+
         <ul class="features">
           <li>Everything in Starter</li>
           <li>50,000 Predictions / month</li>
@@ -74,37 +108,69 @@
           <li>Admin Roles &amp; Permissions</li>
           <li>Priority Support</li>
         </ul>
-        <a class="btn primary cta">Get Started</a>
+
+        <div class="card-footer">
+          <!-- <div class="view-all"><a routerLink="/pricing">View all ›</a></div> -->
+          <a class="btn primary cta">Get Started</a>
+        </div>
       </div>
     </article>
   </div>
-<script>
-(function() {
-  function equalizePricingHeights() {
-    const cards = document.querySelectorAll('.pricing-section .price-card');
-    if (!cards.length) return;
 
-    // Reset first so we measure natural content height
-    cards.forEach(c => c.style.removeProperty('height'));
+  <!-- Hard overrides to guarantee visibility/alignment -->
+  <style>
+    /* 20% pill next to Year */
+    .billing-toggle{ display:flex; gap:10px; align-items:center; justify-content:center; }
+    .billing-toggle .save-note{
+      display:inline-block; margin-left:2px; padding:4px 10px;
+      font-size:12px; font-weight:700; border-radius:9999px;
+      background:var(--brand); color:#fff; white-space:nowrap;
+    }
 
-    // Measure tallest natural height
-    let max = 0;
-    cards.forEach(c => { max = Math.max(max, c.offsetHeight); });
+    /* Footer sticks to bottom of card */
+    .price-card .body{ display:flex; flex-direction:column; height:100%; }
+    .price-card .card-footer{
+      margin-top:auto; display:grid; grid-template-columns:1fr; gap:12px;
+      align-items:center; position:relative; z-index:1;
+    }
 
-    // Apply equal height (with !important to beat older rules if any remain)
-    cards.forEach(c => c.style.setProperty('height', max + 'px', 'important'));
-  }
+    /* Right-aligned link; theme-aware color */
+    .price-card .view-all{ justify-self:end; font-size:14px; font-weight:600; line-height:1; }
+    .price-card .view-all a{ text-decoration:none; cursor:pointer; }
+    .price-card .view-all a:hover{ text-decoration:underline; }
+    :root:not([data-theme='dark']) .pricing-section .price-card .view-all a{ color:#0e1116 !important; }
+    :root[data-theme='dark'] .pricing-section .price-card .view-all a{ color:#fff !important; }
 
-  // Run on load and on resize
-  window.addEventListener('load', equalizePricingHeights);
-  window.addEventListener('resize', () => {
-    // debounce a hair for smoother behavior
-    window.requestAnimationFrame(equalizePricingHeights);
-  });
-})();
-</script>
-<br>
-<br>
-<br>
+    /* Uniform filled pill CTAs (all same size) */
+    .price-card .cta{
+      justify-self:center;
+      display:inline-flex; align-items:center; justify-content:center;
+      height:44px !important; width:260px !important;
+      padding:0 24px !important; border-radius:9999px !important;
+      background:var(--brand) !important; border:1px solid var(--brand) !important;
+      color:#fff !important; box-shadow:none !important; white-space:nowrap; text-align:center;
+    }
+  </style>
+
+  <!-- Equalize heights -->
+  <script>
+    (function(){
+      function equalizePricingHeights(){
+        const cards = document.querySelectorAll('.pricing-section .price-card');
+        if(!cards.length) return;
+        cards.forEach(c => c.style.removeProperty('height'));
+        let max = 0;
+        cards.forEach(c => max = Math.max(max, c.offsetHeight));
+        cards.forEach(c => c.style.setProperty('height', max + 'px', 'important'));
+      }
+      window.addEventListener('load', equalizePricingHeights);
+      window.addEventListener('resize', () => requestAnimationFrame(equalizePricingHeights));
+    })();
+  </script>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
   <app-subscribe-bar></app-subscribe-bar>
 </section>

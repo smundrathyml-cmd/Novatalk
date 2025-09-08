@@ -1,0 +1,39 @@
+<section class="nt-faqs" data-nt-faqs>
+  <div class="nt-faqs__heading">
+    <h2 class="nt-faqs__title">FAQs</h2>
+  </div>
+
+  <div class="nt-faqs__list">
+    <details class="nt-faq"
+             *ngFor="let q of faqs; let i = index"
+             [attr.open]="openFaqIndex === i ? '' : null">
+      <summary class="nt-faq__summary" (click)="toggleFaq(i, $event)">
+        {{ q.q }}
+        <span class="nt-faq__caret" [class.is-open]="openFaqIndex === i">▾</span>
+      </summary>
+
+      <!-- Prefer bullet list answers. If you only have a string, it renders as one bullet. -->
+      <ng-container *ngIf="q.aList?.length; else singleAnswer">
+        <ul class="nt-faq__bullets">
+          <li *ngFor="let item of q.aList">{{ item }}</li>
+        </ul>
+      </ng-container>
+      <ng-template #singleAnswer>
+        <ul class="nt-faq__bullets">
+          <li>{{ q.a }}</li>
+        </ul>
+      </ng-template>
+    </details>
+  </div>
+</section>
+
+
+
+<br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <app-subscribe-bar></app-subscribe-bar>
+
+

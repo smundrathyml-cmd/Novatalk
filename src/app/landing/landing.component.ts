@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SubscribeBarComponent } from '../cta/subscribe-bar.component';
 import { Router } from '@angular/router';
-
+import { ContactUsComponent } from '../contactus/contactus.component';
 
 type Side = 'left' | 'right';
 type ChatMsg = {
@@ -11,18 +11,55 @@ type ChatMsg = {
   from: 'user' | 'bot';
   hint?: string;
   hintSide?: Side;
-  label?: string;           // NEW: optional inline label for hero chat bubbles
+  label?: string;           // optional inline label for hero chat bubbles
 };
 
 @Component({
-  selector:'app-landing',
-  standalone:true,
-  imports:[CommonModule, RouterModule, SubscribeBarComponent],
-  templateUrl:'./landing.component.html', styleUrls:['./landing.component.css'] })
-
+  selector: 'app-landing',
+  standalone: true,
+  imports: [CommonModule, RouterModule, SubscribeBarComponent],
+  templateUrl: './landing.component.html',
+  styleUrls: ['./landing.component.css']
+})
 export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  // ====== PRICING: month/year + discount ======
+  billing: 'month' | 'year' = 'month';    // default
+  private readonly discountPct = 20;      // 20% off when yearly
+
+  /** Base monthly prices (before any discount). */
+  private readonly basePrices = {
+    starter: 35,
+    pro: 65,
+  };
+
+  /** Price shown in UI depending on billing toggle. */
+  displayedPrice(plan: 'starter' | 'pro'): number {
+    const p = this.basePrices[plan];
+    if (this.billing === 'year') {
+      // 20% off monthly price (rounded to nearest dollar)
+      return Math.round(p * (1 - this.discountPct / 100));
+    }
+    return p;
+  }
+
+  setBilling(mode: 'month' | 'year') {
+    this.billing = mode;
+  }
+
+  goToPricing() {
+    // Navigate to your Pricing route/component
+    this.router.navigate(['/pricing']);
+  }
+
+  // ======  ======
+
   // kept from original (not used by outside overlay logic)
+  openFaqIndex: number | null = null;
+toggleFaq(i: number, e: Event){
+  e.preventDefault(); // prevent the native <details> auto-toggle
+  this.openFaqIndex = (this.openFaqIndex === i) ? null : i;
+}
   bubbleVisible = false;
   bubbleTop = 0;
   bubbleSide: Side = 'left';
@@ -43,8 +80,14 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private router: Router) {}
 
   goFeature(id: string) {
-  this.router.navigate(['/features'], { fragment: id });
-}
+    this.router.navigate(['/features'], { fragment: id });
+  }
+
+  // ====== NEW: input + typing control ======
+  userInput: string = '';
+  isTyping: boolean = false;
+  private typingDelayMs = 600;   // time to show (...) before bot replies
+  private autoplayGapMs = 1200;  // cadence for your existing scripted steps
 
   Math = Math;
 
@@ -79,66 +122,65 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   logos = ['/assets/logo1.png','/assets/logo2.png','/assets/logo3.png','/assets/logo4.jpg', '/assets/logo5.png', '/assets/logo.6.png'];
 
   featureCards = [
-  {
-    id: 'real-time-moderation-compliance-enforcement',
-    img: '/assets/features/real-time-moderation-compliance-enforcement.jpeg',
-    title: 'Real-Time Moderation & Compliance Enforcement',
-    desc: 'Monitors chats, forums, and interactions for harmful or non-compliant content. Instantly flags risks, enforces rules, and keeps engagement safe while protecting brand reputation.'
-  },
-  {
-    id: 'ai-powered-business-knowledge-hub',
-    img: '/assets/features/ai-powered-business-knowledge-hub.jpeg',
-    title: 'AI-Powered Business Knowledge Hub',
-    desc: 'Acts as a central brain for your organization. Answers questions from product specs to policies with accurate, context-aware responses while tracking previous interactions.'
-  },
-  {
-    id: 'internal-system-integration',
-    img: '/assets/features/internal-system-integration.png',
-    title: 'Internal System Integration',
-    desc: 'Connects with CRMs, ERPs, support tools, and inventory platforms. Fetches, updates, and shares critical information instantly — reducing friction and keeping operations moving.'
-  },
-  {
-    id: '24x7-customer-engagement',
-    img: '/assets/features/24x7-customer-engagement.jpeg',
-    title: '24/7 Customer Engagement',
-    desc: 'Always active, answering questions, resolving requests, and escalating complex issues to human agents without delays — keeping customers satisfied around the clock.'
-  },
-  {
-    id: 'personalized-responses-recommendations',
-    img: '/assets/features/personalized-responses-recommendations.png',
-    title: 'Personalized Responses & Recommendations',
-    desc: 'Recognizes returning customers, recalls past interactions, and delivers responses or recommendations that fit user history and preferences — creating meaningful, relationship-focused engagement.'
-  },
-  {
-    id: 'multilingual-support',
-    img: '/assets/features/multilingual-support.jpeg',
-    title: 'Multilingual Support',
-    desc: 'Communicates in multiple languages to serve global customers, breaking language barriers and delivering consistent, high-quality interactions without extra staff.'
-  },
-  {
-    id: 'omnichannel-presence',
-    img: '/assets/features/omnichannel-presence.jpeg',
-    title: 'Omnichannel Presence',
-    desc: 'Integrates across websites, mobile apps, email, social media, and messaging platforms like WhatsApp or Slack — ensuring customers engage wherever they are.'
-  },
-  {
-    id: 'analytics-insights-dashboard',
-    img: '/assets/features/analytics-insights-dashboard.jpeg',
-    title: 'Analytics & Insights Dashboard',
-    desc: 'Tracks conversation trends, frequent questions, satisfaction scores, and escalations. Delivers insights that help improve operations, service quality, and product offerings.'
-  },
-  {
-    id: 'secure-privacy-compliant',
-    img: '/assets/features/secure-privacy-compliant.png',
-    title: 'Secure & Privacy-Compliant',
-    desc: 'Uses enterprise-grade encryption and follows global data regulations, keeping sensitive business and customer information protected at all times.'
-  }
-];
-hoveredPricing = 1;                       // default: center card focused
-billing: 'month' | 'year' = 'year';       // just for the pills’ active style
+    {
+      id: 'real-time-moderation-compliance-enforcement',
+      img: '/assets/features/real-time-moderation-compliance-enforcement.jpeg',
+      title: 'Real-Time Moderation & Compliance Enforcement',
+      desc: 'Monitors chats, forums, and interactions for harmful or non-compliant content. Instantly flags risks, enforces rules, and keeps engagement safe while protecting brand reputation.'
+    },
+    {
+      id: 'ai-powered-business-knowledge-hub',
+      img: '/assets/features/ai-powered-business-knowledge-hub.jpeg',
+      title: 'AI-Powered Business Knowledge Hub',
+      desc: 'Acts as a central brain for your organization. Answers questions from product specs to policies with accurate, context-aware responses while tracking previous interactions.'
+    },
+    {
+      id: 'internal-system-integration',
+      img: '/assets/features/internal-system-integration.png',
+      title: 'Internal System Integration',
+      desc: 'Connects with CRMs, ERPs, support tools, and inventory platforms. Fetches, updates, and shares critical information instantly — reducing friction and keeping operations moving.'
+    },
+    {
+      id: '24x7-customer-engagement',
+      img: '/assets/features/24x7-customer-engagement.jpeg',
+      title: '24/7 Customer Engagement',
+      desc: 'Always active, answering questions, resolving requests, and escalating complex issues to human agents without delays — keeping customers satisfied around the clock.'
+    },
+    {
+      id: 'personalized-responses-recommendations',
+      img: '/assets/features/personalized-responses-recommendations.png',
+      title: 'Personalized Responses & Recommendations',
+      desc: 'Recognizes returning customers, recalls past interactions, and delivers responses or recommendations that fit user history and preferences — creating meaningful, relationship-focused engagement.'
+    },
+    {
+      id: 'multilingual-support',
+      img: '/assets/features/multilingual-support.jpeg',
+      title: 'Multilingual Support',
+      desc: 'Communicates in multiple languages to serve global customers, breaking language barriers and delivering consistent, high-quality interactions without extra staff.'
+    },
+    {
+      id: 'omnichannel-presence',
+      img: '/assets/omnichannel-presence.jpeg',
+      title: 'Omnichannel Presence',
+      desc: 'Integrates across websites, mobile apps, email, social media, and messaging platforms like WhatsApp or Slack — ensuring customers engage wherever they are.'
+    },
+    {
+      id: 'analytics-insights-dashboard',
+      img: '/assets/features/analytics-insights-dashboard.jpeg',
+      title: 'Analytics & Insights Dashboard',
+      desc: 'Tracks conversation trends, frequent questions, satisfaction scores, and escalations. Delivers insights that help improve operations, service quality, and product offerings.'
+    },
+    {
+      id: 'secure-privacy-compliant',
+      img: '/assets/features/secure-privacy-compliant.png',
+      title: 'Secure & Privacy-Compliant',
+      desc: 'Uses enterprise-grade encryption and follows global data regulations, keeping sensitive business and customer information protected at all times.'
+    }
+  ];
 
-onPriceHover(i: number) { this.hoveredPricing = i; }
-onPriceLeave()        { this.hoveredPricing = 1; }
+  hoveredPricing = 1;                       // default: center card focused
+  onPriceHover(i: number) { this.hoveredPricing = i; }
+  onPriceLeave()        { this.hoveredPricing = 1; }
 
   testimonials = [
     { stars:'★★★★★', text:'NovaTalk handles messages instantly, flags potential risks, and suggests next steps. It’s like having a team working 24/7.', author:'Ethan Navarro' },
@@ -156,6 +198,7 @@ onPriceLeave()        { this.hoveredPricing = 1; }
   faqsOpen = false;
   botAvatar = 'assets/Novatalk.png';
   userAvatar = 'assets/ellipse.svg';
+
   // autoscroll helpers (DEMO CHAT)
   private stickToBottom = true;
   private mo?: MutationObserver;
@@ -180,17 +223,37 @@ onPriceLeave()        { this.hoveredPricing = 1; }
   private heroIdx = 0;
   private heroTimer?: any;
 
+  // ===== INIT =====
   ngOnInit(): void {
-    // loop chat demo
+    // autoplay demo with typing indicator before bot lines
     let i = 0;
-    const run = () => {
-      this.addMessage(this.steps[i]);
-      i = (i + 1) % this.steps.length;
-      setTimeout(run, 1200);
-      if (this.messages.length > 8) this.messages.shift();
-    };
-    run();
 
+    const tick = () => {
+      const step = this.steps[i];
+
+      // housekeep: cap messages to last 8
+      if (this.messages.length > 8) this.messages.shift();
+
+      if (step.from === 'bot') {
+        // show typing dots first
+        this.isTyping = true;
+        setTimeout(() => {
+          this.isTyping = false;
+          this.addMessage(step);
+          setTimeout(tick, this.autoplayGapMs);
+        }, this.typingDelayMs);
+      } else {
+        // user lines appear directly
+        this.addMessage(step);
+        setTimeout(tick, this.autoplayGapMs);
+      }
+
+      i = (i + 1) % this.steps.length;
+    };
+
+    tick();
+
+    // existing pagination setup retained
     const pageSize = 3;
     for (let k = 0; k < this.featureCards.length; k += pageSize) {
       this.featurePages.push(this.featureCards.slice(k, k + pageSize));
@@ -245,6 +308,25 @@ onPriceLeave()        { this.hoveredPricing = 1; }
     });
   }
 
+  sendMessage(text?: string) {
+    const msg = (text ?? this.userInput ?? '').trim();
+    if (!msg) return;
+
+    // push user message
+    this.addMessage({ text: msg, from: 'user' });
+    this.userInput = '';
+
+    // show typing, then mock a bot reply
+    this.isTyping = true;
+    setTimeout(() => {
+      this.isTyping = false;
+      this.addMessage({
+        text: "Demo reply: I've received your message.",
+        from: 'bot'
+      });
+    }, this.typingDelayMs);
+  }
+
   private scrollToBottom() {
     const el = this.chatBody?.nativeElement;
     if (!el) return;
@@ -252,7 +334,7 @@ onPriceLeave()        { this.hoveredPricing = 1; }
   }
 
   /** Show ONE hint: the closest message to the vertical center of the chat body,
-   * and keep it visible for a dwell time before switching to a new one.
+   * keep it for a dwell time, then clear if nothing nearby has a hint.
    */
   private layoutOutsideHintForCenter() {
     const wrap = this.demoWrap?.nativeElement;
@@ -269,9 +351,8 @@ onPriceLeave()        { this.hoveredPricing = 1; }
     const rows = this.msgRows?.toArray() || [];
     if (!rows.length) { this.outsideHints = []; this.currentHintIdx = null; return; }
 
-    // find row whose center is nearest to chat body's vertical center
-    let bestIdx = -1;
-    let bestDist = Number.POSITIVE_INFINITY;
+    // find nearest row to vertical center
+    let bestIdx = -1, bestDist = Number.POSITIVE_INFINITY;
     rows.forEach((ref, idx) => {
       const r = ref.nativeElement.getBoundingClientRect();
       const rowCenter = r.top + r.height / 2;
@@ -285,41 +366,36 @@ onPriceLeave()        { this.hoveredPricing = 1; }
     const now = Date.now();
     let idxToRender: number | null = null;
 
-    if (this.currentHintIdx !== null) {
-      const currentMsg = this.messages[this.currentHintIdx];
-      const currentStillValid =
-        !!currentMsg && currentMsg.from === 'bot' && !!currentMsg.hint &&
-        this.currentHintIdx < rows.length;
+    // Validate current
+    const currentValid =
+      this.currentHintIdx !== null &&
+      this.currentHintIdx! < this.messages.length &&
+      this.messages[this.currentHintIdx!]?.from === 'bot' &&
+      !!this.messages[this.currentHintIdx!]?.hint &&
+      this.currentHintIdx! < rows.length;
 
-      if ((bestIdx !== this.currentHintIdx) && (now - this.lastHintSwitchAt >= this.hintDwellMs)) {
-        if (nearestHasHint) {
-          this.currentHintIdx = bestIdx;
-          this.lastHintSwitchAt = now;
-          idxToRender = this.currentHintIdx;
-        } else if (currentStillValid) {
-          idxToRender = this.currentHintIdx;
-        } else {
-          this.currentHintIdx = null;
-          idxToRender = null;
-        }
+    // Switch or keep according to dwell
+    if (nearestHasHint && (!currentValid || (now - this.lastHintSwitchAt >= this.hintDwellMs))) {
+      this.currentHintIdx = bestIdx;
+      this.lastHintSwitchAt = now;
+      idxToRender = this.currentHintIdx;
+    } else if (currentValid) {
+      // keep showing current until dwell expires OR it scrolls out
+      if (now - this.lastHintSwitchAt >= this.hintDwellMs && !nearestHasHint) {
+        // dwell expired and there's no nearby hint to switch to -> clear
+        this.currentHintIdx = null;
+        idxToRender = null;
       } else {
-        if (currentStillValid) {
-          idxToRender = this.currentHintIdx;
-        } else if (nearestHasHint) {
-          this.currentHintIdx = bestIdx;
-          this.lastHintSwitchAt = now;
-          idxToRender = this.currentHintIdx;
-        } else {
-          idxToRender = null;
-        }
+        idxToRender = this.currentHintIdx!;
       }
     } else {
-      if (nearestHasHint) {
-        this.currentHintIdx = bestIdx;
+      // no valid current; if nearest has no hint, render none
+      idxToRender = nearestHasHint ? bestIdx : null;
+      if (idxToRender !== null) {
+        this.currentHintIdx = idxToRender;
         this.lastHintSwitchAt = now;
-        idxToRender = this.currentHintIdx;
       } else {
-        idxToRender = null;
+        this.currentHintIdx = null;
       }
     }
 
@@ -331,18 +407,17 @@ onPriceLeave()        { this.hoveredPricing = 1; }
 
     // anchors for outside bubble
     const bubbleW = 260;
-const gutter  = 8;
+    const gutter  = 8;
 
-const leftX  = boxRect.left - wrapRect.left - bubbleW - gutter;  // outside to the left
-const rightX = boxRect.right - wrapRect.left + gutter;           // outside to the right
+    const leftX  = boxRect.left - wrapRect.left - bubbleW - gutter;  // outside to the left
+    const rightX = boxRect.right - wrapRect.left + gutter;           // outside to the right
 
-const side: Side = m.hintSide ?? 'left';
-this.outsideHints = [
-  side === 'left'
-    ? { top, x: leftX,  side: 'left',  text: m.hint! }
-    : { top, x: rightX, side: 'right', text: m.hint! }
-];
-
+    const side: Side = m.hintSide ?? 'left';
+    this.outsideHints = [
+      side === 'left'
+        ? { top, x: leftX,  side: 'left',  text: m.hint! }
+        : { top, x: rightX, side: 'right', text: m.hint! }
+    ];
   }
 
   // ===== HERO CHAT autoplay =====

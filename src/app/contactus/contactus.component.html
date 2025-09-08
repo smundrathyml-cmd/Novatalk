@@ -1,0 +1,72 @@
+<section class="nt-contact">
+  <div class="nt-contact__inner">
+    <!-- Left column -->
+    <div class="nt-contact__left">
+      <h1 class="nt-contact__title">Contact us</h1>
+
+      <ul class="nt-contact__list">
+        <li>
+          <span class="ico">@</span>
+          <a href="mailto:connect@novasarc.com">connect@novasarc.com</a>
+        </li>
+        <li>
+          <span class="ico">☎</span>
+          <a href="tel:+18773043349">1-877-304-3349</a>
+        </li>
+        <li class="addr">
+          <span class="ico">📍</span>
+          <address>
+            Level 2, iLabs Center, Oval Building, Plot No. 18<br> Inorbit Mall Rd,
+            Silpa Gram Craft Village<br> Madhapur, Hyderabad, Telangana 500081
+          </address>
+        </li>
+      </ul>
+
+      <div class="nt-contact__social">
+        <a aria-label="Instagram" href="#" rel="nofollow noopener">IG</a>
+        <a aria-label="LinkedIn"  href="#" rel="nofollow noopener">in</a>
+        <a aria-label="X"         href="#" rel="nofollow noopener">X</a>
+        <a aria-label="Facebook"  href="#" rel="nofollow noopener">f</a>
+      </div>
+    </div>
+
+    <!-- Right column (form) -->
+    <div class="nt-contact__card">
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" type="text" formControlName="name" placeholder="John Doe" />
+          <p class="err" *ngIf="f.name.touched && f.name.invalid">Please enter your name.</p>
+        </div>
+
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input id="email" type="email" formControlName="email" placeholder="example@mail.com" />
+          <p class="err" *ngIf="f.email.touched && f.email.invalid">Enter a valid email.</p>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone Number</label>
+          <input id="phone" type="tel" formControlName="phone" placeholder="+91 0123456789" />
+          <p class="err" *ngIf="f.phone.touched && f.phone.invalid">Phone is required.</p>
+        </div>
+
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" rows="4" formControlName="message" placeholder="Type here..."></textarea>
+          <p class="err" *ngIf="f.message.touched && f.message.invalid">Please add a short message.</p>
+        </div>
+
+        <button class="send" type="submit" [disabled]="sending() || form.invalid">
+          {{ sending() ? 'Sending…' : 'Send' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+  <app-subscribe-bar></app-subscribe-bar>
+

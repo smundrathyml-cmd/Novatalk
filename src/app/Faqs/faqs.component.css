@@ -1,0 +1,114 @@
+/* ===== NovaTalk FAQs (scoped) ===== */
+
+/* Shell */
+:host .nt-faqs{
+  margin: 0 auto;
+  padding: 0 0 24px;
+  color: var(--ink);
+}
+
+/* Heading */
+:host .nt-faqs__heading{
+  width: min(1028px, 92vw);
+  margin: 8px auto 12px;
+  text-align: center;
+  position: relative;
+}
+
+:host .nt-faqs__title{
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+
+/* List wrapper */
+:host .nt-faqs__list{
+  width: min(1028px, 92vw);
+  margin: 0 auto 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* One FAQ card */
+:host .nt-faq{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--ink);
+  overflow: hidden;
+}
+
+/* Summary row */
+:host .nt-faq__summary{
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: inherit;
+  outline: 0;
+}
+
+:host .nt-faq__summary::-webkit-details-marker{ display:none; }
+
+/* Divider only when open */
+:host .nt-faq[open] .nt-faq__summary{
+  border-bottom: 1px solid var(--border);
+}
+
+/* Caret */
+:host .nt-faq__caret{
+  margin-left: 10px;
+  transition: transform .2s ease;
+}
+:host .nt-faq__caret.is-open{
+  transform: rotate(180deg);
+}
+
+/* Answer as bullets */
+:host .nt-faq__bullets{
+  margin: 12px 18px 16px 32px; /* L margin for bullets */
+  padding: 0;
+  color: var(--ink);
+  line-height: 1.6;
+}
+:host .nt-faq__bullets li{
+  margin: 0 0 6px;
+}
+
+/* Hover affordance on summary */
+:host .nt-faq__summary:hover{
+  background: var(--bgElev);
+}
+
+/* -------- Dark mode (under Angular encapsulation) -------- */
+:host-context([data-theme='dark']) .nt-faq{
+  background: #0e1829;
+  border-color: rgba(207,228,255,.16);
+  color: #dbe7ff;
+}
+:host-context([data-theme='dark']) .nt-faq[open] .nt-faq__summary{
+  border-bottom-color: rgba(207,228,255,.28);
+}
+:host-context([data-theme='dark']) .nt-faq__summary:hover{
+  background: rgba(255,255,255,.04);
+}
+
+/* -------- Accessibility focus -------- */
+:host .nt-faq__summary:focus-visible{
+  box-shadow: 0 0 0 2px rgba(14,124,242,.35) inset;
+  border-radius: 10px;
+}
+
+/* -------- Kill any inherited rails/lines (defensive) -------- */
+/* Your new classes don’t add lines; these ensure no global rails leak in */
+:host .nt-faqs::before,
+:host .nt-faqs::after,
+:host .nt-faqs__heading::before,
+:host .nt-faqs__heading::after{
+  content: none !important;
+  display: none !important;
+}
