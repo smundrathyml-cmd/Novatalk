@@ -50,7 +50,7 @@ a{text-decoration:none;color:inherit}
 .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
 
 h1{font-size:40px;line-height:1.1;margin:0 0 16px;color:var(--ink)}
-h2{font-size:28px;margin:0 0 8px;color:var(--ink);text-align:center}
+h2{font-size:36px;margin:0 0 8px;color:var(--ink);text-align:center}
 h3{font-size:20px;margin:0 0 6px;color:var(--ink)}
 .lead{font-size:18px;color:var(--muted);text-align:center}
 .kicker{font-weight:700;color:var(--brand);letter-spacing:.04em;text-transform:uppercase;font-size:12px;text-align:center}
@@ -617,7 +617,7 @@ app-theme-toggle{display:inline-block;width:44px;height:24px;overflow:hidden}
 .faqs-section{margin:0 auto;padding-left:0;padding-right:0}
 .faqs-heading{width:1028px;margin:6px auto 12px;display:flex;align-items:center;gap:14px}
 .faqs-heading .line{flex:1;height:1px;background:var(--border)}
-.faqs-heading h2{margin:0;white-space:nowrap;text-align:center}
+.faqs-heading h2{margin:0;white-space:nowrap;text-align:center;font-size:36px}
 
 .faqs-list{width:1028px;margin:0 auto 40px;display:flex;flex-direction:column;gap:12px}
 .faqs-list details{
@@ -796,7 +796,8 @@ app-theme-toggle{display:inline-block;width:44px;height:24px;overflow:hidden}
   position:relative;
   z-index:1;
   padding:0 12px;                   /* little gap around text */
-  background:var(--bg);             /* masks the bar under the text */
+  background:var(--bg); 
+  font-size:36px;            /* masks the bar under the text */
 }
 
 /* dark-theme color tweak */
@@ -846,6 +847,7 @@ app-theme-toggle{display:inline-block;width:44px;height:24px;overflow:hidden}
   position:relative; z-index:1;
   padding:0 12px;
   background:var(--bg);
+  font-size:36px;
 }
 
 /* subtle color tweak in dark mode */
@@ -1279,7 +1281,7 @@ app-theme-toggle{display:inline-block;width:44px;height:24px;overflow:hidden}
 
 .faqs-heading h2 {
   margin: 0;
-  font-size: 24px;
+  font-size: 36px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -1554,6 +1556,7 @@ app-theme-toggle{display:inline-block;width:44px;height:24px;overflow:hidden}
   text-align: center;
   font-weight: 800;
   letter-spacing: .01em;
+  font-size:36px
 }
 
 /* Wrap whole FAQs section with a bottom line */
@@ -3643,5 +3646,122 @@ a.btn.primary{
 :root[data-theme='dark'] .theme-toggle-wrap app-theme-toggle .theme-toggle .knob {
   left:27px;
 }
+/* ================================
+   FINAL OVERRIDES (append at end)
+   ================================ */
+
+/* 1) Header page second-level headings: 36px everywhere */
+header h2,
+.header h2,
+.page-header h2,
+.header-page h2{
+  font-size: 36px !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em;
+}
+
+/* 2) Theme toggle: visible ring per theme */
+.header app-theme-toggle .theme-toggle,
+.theme-toggle-wrap app-theme-toggle .theme-toggle{
+  position: relative !important;
+  width: 52px !important;
+  height: 28px !important;
+  padding: 3px !important;
+  border-radius: 9999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* White outline in dark, black in light */
+:root[data-theme='dark']  .header app-theme-toggle .theme-toggle,
+:root[data-theme='dark']  .theme-toggle-wrap app-theme-toggle .theme-toggle{
+  border: 2px solid #fff !important;
+}
+:root:not([data-theme='dark']) .header app-theme-toggle .theme-toggle,
+:root:not([data-theme='dark']) .theme-toggle-wrap app-theme-toggle .theme-toggle{
+  border: 2px solid #000 !important;
+}
+
+/* Knob sizing + slide */
+.header app-theme-toggle .theme-toggle .knob,
+.theme-toggle-wrap app-theme-toggle .theme-toggle .knob{
+  position: absolute !important;
+  top: 3px !important;
+  left: 3px !important;
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50% !important;
+  transition: left .25s ease !important;
+}
+:root[data-theme='dark'] .header app-theme-toggle .theme-toggle .knob,
+:root[data-theme='dark'] .theme-toggle-wrap app-theme-toggle .theme-toggle .knob{
+  left: 27px !important;
+}
+
+/* 3) Primary buttons stay brand blue (light & dark) */
+.btn.primary{
+  background: #0e7cf2 !important;
+  border-color: #0e7cf2 !important;
+  color: #fff !important;
+}
+.btn.primary:hover{ background:#0b65c6 !important; }
+.btn.primary:active{ background:#0952a3 !important; }
+
+/* Signup button (hero form) is also locked to brand blue */
+.subscribe-form .btn.primary{
+  background: #0e7cf2 !important;
+  border-color: #0e7cf2 !important;
+  color: #fff !important;
+}
+
+/* Header Login button ~20% narrower and fixed color */
+.header .container .nav[style] > a.btn.primary,
+.header .container > .nav:last-child > a.btn.primary,
+.header .nav > a.btn.primary{
+  width: 70px !important;     /* ~20% narrower than 88px */
+  min-width: 70px !important;
+  flex: 0 0 70px !important;
+  padding: 0 !important;
+  height: 34px !important;
+  line-height: 34px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+
+  background: #0e7cf2 !important; /* never flips in light mode */
+  color: #fff !important;
+  border: 0 !important;
+  box-shadow: 0 6px 20px rgba(14,124,242,.35) !important;
+  transition: transform .18s ease, box-shadow .18s ease !important;
+}
+.header .container .nav[style] > a.btn.primary:hover,
+.header .container > .nav:last-child > a.btn.primary:hover,
+.header .nav > a.btn.primary:hover{
+  transform: translateY(-1px) !important;
+  box-shadow: 0 8px 24px rgba(14,124,242,.45) !important;
+}
+.header .container .nav[style] > a.btn.primary:active,
+.header .container > .nav:last-child > a.btn.primary:active,
+.header .nav > a.btn.primary:active{
+  transform: none !important;
+  box-shadow: 0 4px 14px rgba(14,124,242,.30) !important;
+}
+
+/* Small screens: login even slimmer */
+@media (max-width:480px){
+  .header .container .nav[style] > a.btn.primary,
+  .header .container > .nav:last-child > a.btn.primary,
+  .header .nav > a.btn.primary{
+    width: 56px !important;
+    min-width: 56px !important;
+    flex: 0 0 56px !important;
+  }
+}
+
+/* Micro spacing between menu and the toggle */
+.header .container > .nav:last-child{ gap: 14px !important; }
+.header app-theme-toggle{ margin-right: 10px !important; }
 
 
