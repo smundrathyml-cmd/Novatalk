@@ -60,6 +60,24 @@ toggleFaq(i: number, e: Event){
   e.preventDefault(); // prevent the native <details> auto-toggle
   this.openFaqIndex = (this.openFaqIndex === i) ? null : i;
 }
+// Only one <details> open at a time
+faqsActive: number | null = null;
+
+onFaqToggle(i: number, ev: Event) {
+  const el = ev.currentTarget as HTMLDetailsElement;
+
+  if (el.open) {
+    // User opened this one → make it the active item
+    this.faqsActive = i;
+  } else {
+    // This details just closed. Only collapse all if it was the active one.
+    // If a different item auto-closed because another one opened, ignore it.
+    if (this.faqsActive === i) {
+      this.faqsActive = null;
+    }
+  }
+}
+
   bubbleVisible = false;
   bubbleTop = 0;
   bubbleSide: Side = 'left';

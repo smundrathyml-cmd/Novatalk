@@ -11,4 +11,7 @@ import { SubscribeBarComponent } from './cta/subscribe-bar.component';
   
   <app-footer></app-footer>
   <app-chat-widget></app-chat-widget>
-`}) export class AppComponent{}
+`}) export class AppComponent{
+  ngOnInit(){ document.documentElement.setAttribute('data-theme','dark'); }
+
+}

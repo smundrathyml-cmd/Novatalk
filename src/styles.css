@@ -3763,5 +3763,143 @@ header h2,
 /* Micro spacing between menu and the toggle */
 .header .container > .nav:last-child{ gap: 14px !important; }
 .header app-theme-toggle{ margin-right: 10px !important; }
+/* Blog cards: make column flex so CTA can sit bottom-right */
+.resources-blog .blog-card{
+  display:flex;
+  flex-direction:column;
+}
+
+/* "Read more" -> bottom-right, consistent across cards */
+.resources-blog .blog-read{
+  margin-top:auto;          /* pushes it to the bottom of the card */
+  align-self:flex-end;      /* right align within the card */
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-weight:600;
+  text-decoration:none;
+}
+/* Remove dark shadow from testimonial carousel arrows */
+.carousel.home-test .nav,
+.carousel.home-test .nav:hover,
+.carousel.home-test .nav:focus {
+  box-shadow: none !important;
+  text-shadow: none !important; /* safety if fonts render glow */
+}
+
+/* Keep the buttons looking clean */
+:root:not([data-theme='dark']) .carousel.home-test .nav {
+  background: #fff;
+  border: 1px solid var(--border);
+}
+:root[data-theme='dark'] .carousel.home-test .nav {
+  background: #dbeafe;
+  border: 0;
+}
+/* Plain logo rail: no fades, no masks, no overlays */
+#home-logos.logos-rail::before,
+#home-logos.logos-rail::after{
+  content: none !important;      /* kill the pseudo-elements */
+  display: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* In case any masking was added earlier */
+#home-logos.logos-rail{
+  -webkit-mask: none !important;
+  -webkit-mask-image: none !important;
+  mask: none !important;
+  mask-image: none !important;
+  /* keep overflow as you prefer; hidden avoids half-chips peeking out */
+  /* overflow: hidden; */
+}
+/* ==== THEME TOGGLE – final fix (header only) ===================== */
+.header app-theme-toggle .theme-toggle{
+  /* keep size you want, just clip the knob INSIDE the pill */
+  overflow: hidden !important;
+}
+
+.header app-theme-toggle .theme-toggle .knob{
+  /* perfect vertical centering regardless of track height */
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+/* left/right positions unchanged */
+.header app-theme-toggle .theme-toggle .knob{ left: 3px !important; }
+:root[data-theme='dark'] .header app-theme-toggle .theme-toggle .knob{ left: 27px !important; }
+/* === FORCE LOGIN & SIGN UP TEXT WHITE IN BOTH THEMES === */
+.header .nav a.btn,
+.header .nav a.btn.primary {
+  color: #ffffff !important;   /* stays white in light & dark */
+}
+
+/* optional: enforce the SVG/icon inside also white */
+.header .nav a.btn svg,
+.header .nav a.btn.primary svg {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+/* ====================== HEADER CTAs — FINAL LOCK ====================== */
+/* Unify styles: keep both on brand blue, but allow Login slimmer width */
+
+/* Both CTAs: same look, always white text */
+.header .nav a.btn,
+.header .nav a.btn.primary,
+.header .container .nav[style] > a.btn,
+.header .container .nav[style] > a.btn.primary {
+  background-color: var(--brand) !important;
+  border: 1px solid var(--brand) !important;
+  box-shadow: 0 6px 20px rgba(14,124,242,.35) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+  white-space: nowrap !important;
+}
+
+/* Sign up button (primary) keeps a slightly larger min-width */
+.header .nav a.btn.primary,
+.header .container .nav[style] > a.btn.primary {
+  min-width: 96px !important;
+  padding: 0 16px !important;
+}
+
+/* Login button (non-primary) made a bit slimmer */
+.header .nav a.btn:not(.primary),
+.header .container .nav[style] > a.btn:not(.primary) {
+  min-width: 80px !important;  /* ↓ narrower than Sign up */
+  padding: 0 14px !important;
+}
+
+/* Ensure hover/active still work */
+.header .nav a.btn:hover,
+.header .nav a.btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(14,124,242,.45) !important;
+}
+.header .nav a.btn:active,
+.header .nav a.btn.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 14px rgba(14,124,242,.30) !important;
+}
+
+/* Kill global blockers in light mode */
+:root:not([data-theme='dark']) .header a.btn,
+:root:not([data-theme='dark']) .header a.btn.primary {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+:root:not([data-theme='dark']) .btn.primary {
+  color: #fff !important;
+}
 
 
