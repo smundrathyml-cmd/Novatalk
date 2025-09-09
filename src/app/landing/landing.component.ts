@@ -24,7 +24,7 @@ type ChatMsg = {
 export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // ====== PRICING: month/year + discount ======
-  billing: 'month' | 'year' = 'month';    // default
+  // billing: 'month' | 'year' = 'month';    // default
   private readonly discountPct = 20;      // 20% off when yearly
 
   /** Base monthly prices (before any discount). */
@@ -34,18 +34,18 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   /** Price shown in UI depending on billing toggle. */
-  displayedPrice(plan: 'starter' | 'pro'): number {
-    const p = this.basePrices[plan];
-    if (this.billing === 'year') {
-      // 20% off monthly price (rounded to nearest dollar)
-      return Math.round(p * (1 - this.discountPct / 100));
-    }
-    return p;
-  }
+  // displayedPrice(plan: 'starter' | 'pro'): number {
+  //   const p = this.basePrices[plan];
+  //   if (this.billing === 'year') {
+  //     // 20% off monthly price (rounded to nearest dollar)
+  //     return Math.round(p * (1 - this.discountPct / 100));
+  //   }
+  //   return p;
+  // }
 
-  setBilling(mode: 'month' | 'year') {
-    this.billing = mode;
-  }
+  // setBilling(mode: 'month' | 'year') {
+  //   this.billing = mode;
+  // }
 
   goToPricing() {
     // Navigate to your Pricing route/component
@@ -96,6 +96,31 @@ onFaqToggle(i: number, ev: Event) {
   ];
 
   constructor(private router: Router) {}
+
+  // Base monthly prices
+prices = { starter: 35, pro: 65 };
+
+// Default without self-reference
+billing: 'month' | 'year' = 'month';
+
+// ngOnInit(): void {
+//   // ...keep your existing ngOnInit code...
+//   const saved =
+//     typeof window !== 'undefined' ? localStorage.getItem('billing') : null;
+//   if (saved === 'month' || saved === 'year') this.billing = saved;
+
+//   // (rest of your existing ngOnInit stays)
+// }
+
+setBilling(mode: 'month' | 'year') {
+  this.billing = mode;
+  try { localStorage.setItem('billing', mode); } catch {}
+}
+
+displayedPrice(plan: 'starter' | 'pro'): number {
+  const base = this.prices[plan];
+  return this.billing === 'year' ? Math.round(base * 0.8) : base;
+}
 
   goFeature(id: string) {
     this.router.navigate(['/features'], { fragment: id });
@@ -243,6 +268,13 @@ onFaqToggle(i: number, ev: Event) {
 
   // ===== INIT =====
   ngOnInit(): void {
+
+    const saved =
+    typeof window !== 'undefined' ? localStorage.getItem('billing') : null;
+  if (saved === 'month' || saved === 'year') this.billing = saved;
+
+  // (rest of your existing ngOnInit stays)
+
     // autoplay demo with typing indicator before bot lines
     let i = 0;
 

@@ -3901,5 +3901,518 @@ header h2,
 :root:not([data-theme='dark']) .btn.primary {
   color: #fff !important;
 }
+/* ====================== HEADER CTAs — UNIFIED STYLE ====================== */
+/* Both buttons same font/weight/shape, only width differs */
 
+.header .nav a.btn,
+.header .nav a.btn.primary,
+.header .container .nav[style] > a.btn,
+.header .container .nav[style] > a.btn.primary {
+  background-color: var(--brand) !important;
+  border: 1px solid var(--brand) !important;
+  box-shadow: 0 6px 20px rgba(14,124,242,.35) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 34px !important;
+  height: 34px !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+/* Sign up button (primary) wider */
+.header .nav a.btn.primary,
+.header .container .nav[style] > a.btn.primary {
+  min-width: 96px !important;
+  padding: 0 16px !important;
+}
+
+/* Login button (non-primary) slightly narrower */
+.header .nav a.btn:not(.primary),
+.header .container .nav[style] > a.btn:not(.primary) {
+  min-width: 80px !important;
+  padding: 0 14px !important;
+}
+
+/* Hover/active */
+.header .nav a.btn:hover,
+.header .nav a.btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(14,124,242,.45) !important;
+}
+.header .nav a.btn:active,
+.header .nav a.btn.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 14px rgba(14,124,242,.30) !important;
+}
+
+/* Force text to stay white in light mode too */
+:root:not([data-theme='dark']) .header a.btn,
+:root:not([data-theme='dark']) .header a.btn.primary {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+/* ==========================================================
+   H2 STANDARDIZATION — paste at the very end of global.css
+   Big H2 = 36px, Small H2 = 20px, all white
+   ========================================================== */
+
+/* Base: make ALL <h2> big + white by default */
+h2 {
+  margin: 0 0 12px;
+  font-weight: 800;
+  font-size: 36px !important;
+  line-height: 1.2;
+  letter-spacing: .01em;
+  color: #fff !important;
+}
+
+/* Component titles that previously used their own sizes — lock them to 36px white */
+.resources-title,
+.blog-title,
+.features-title,
+.pricing-title,
+.faqs-heading h2,
+.feature-hero__title {
+  font-size: 36px !important;
+  color: #fff !important;
+}
+
+/* Small H2 utility (use this class on any <h2> that should be the smaller style) */
+.h2--sm,
+h2.h2-sm,
+.res-body h2 {
+  font-size: 20px !important;
+  line-height: 1.35;
+  color: #fff !important;
+}
+
+/* (Optional) If any light-mode overrides try to darken headings, neutralize them */
+:root:not([data-theme='dark']) h2,
+:root:not([data-theme='dark']) .resources-title,
+:root:not([data-theme='dark']) .blog-title,
+:root:not([data-theme='dark']) .features-title,
+:root:not([data-theme='dark']) .pricing-title,
+:root:not([data-theme='dark']) .faqs-heading h2,
+:root:not([data-theme='dark']) .feature-hero__title {
+  color: #fff !important;
+}
+/* ==============================
+   TYPO OVERRIDES (requested)
+   Paste at end of global.css
+   ============================== */
+
+/* HOW IT WORKS */
+.howit-kicker {
+  font-size: 20px !important;
+  line-height: 1.35;
+  color: #fff !important;
+}
+#howit-title {
+  font-size: 48px !important;
+  line-height: 1.15;
+  color: #fff !important;
+}
+
+/* INTEGRATIONS (kicker + title) */
+.kicker {
+  font-size: 20px !important;
+  line-height: 1.35;
+  color: #fff !important;
+}
+/* Title immediately after a .kicker */
+.kicker + h1 {
+  font-size: 48px !important;
+  line-height: 1.15;
+  color: #fff !important;
+}
+
+/* PRICING */
+.pricing-title {
+  font-size: 48px !important;
+  line-height: 1.15;
+  color: #fff !important;
+}
+/* the sub-title under pricing */
+.pricing-sub {
+  font-size: 20px !important;
+  line-height: 1.5;
+  color: #fff !important;
+}
+
+/* FAQS */
+h4.nt-faqs__title {
+  font-size: 20px !important;
+  line-height: 1.35;
+  color: #fff !important;
+}
+h2.nt-faqs__title {
+  font-size: 48px !important;
+  line-height: 1.15;
+  color: #fff !important;
+}
+
+/* Optional: keep white in light mode too */
+:root:not([data-theme='dark']) .howit-kicker,
+:root:not([data-theme='dark']) #howit-title,
+:root:not([data-theme='dark']) .kicker,
+:root:not([data-theme='dark']) .kicker + h1,
+:root:not([data-theme='dark']) .pricing-title,
+:root:not([data-theme='dark']) .pricing-sub,
+:root:not([data-theme='dark']) h4.nt-faqs__title,
+:root:not([data-theme='dark']) h2.nt-faqs__title {
+  color: #fff !important;
+}
+/* Contact page title */
+.nt-contact__title {
+  font-size: 48px !important;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+  color: #fff !important; /* keep white in both modes */
+}
+
+/* (Optional) If your layout needs smaller on very narrow screens, uncomment:
+@media (max-width: 480px) {
+  .nt-contact__title { font-size: 36px !important; }
+}
+*/
+/* ---- Subscribe bar: better borders in dark, correct title color in light ---- */
+app-subscribe-bar .subscribe-card,
+app-subscribe-bar .subscribe,
+app-subscribe-bar .frame,
+app-subscribe-bar .box {
+  border-radius: 16px;
+}
+
+/* Dark mode: subtle but visible border + faint panel bg */
+:root[data-theme='dark'] app-subscribe-bar .subscribe-card,
+:root[data-theme='dark'] app-subscribe-bar .subscribe,
+:root[data-theme='dark'] app-subscribe-bar .frame,
+:root[data-theme='dark'] app-subscribe-bar .box {
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.02);
+}
+
+/* Light mode: normal light border + ensure heading turns black */
+:root:not([data-theme='dark']) app-subscribe-bar .subscribe-card,
+:root:not([data-theme='dark']) app-subscribe-bar .subscribe,
+:root:not([data-theme='dark']) app-subscribe-bar .frame,
+:root:not([data-theme='dark']) app-subscribe-bar .box {
+  border: 1px solid #e6ecf5;
+  background: #fff;
+}
+:root:not([data-theme='dark']) app-subscribe-bar h2,
+:root:not([data-theme='dark']) app-subscribe-bar h3,
+:root:not([data-theme='dark']) app-subscribe-bar .title {
+  color: #0e1116 !important;
+}
+/* ===== Features card hover: deep neon-blue glow (like pricing) ===== */
+.features-section .feature-card{
+  transition:
+    border-color .25s ease,
+    box-shadow .25s ease,
+    transform .25s ease;
+  will-change: box-shadow, transform;
+}
+
+/* Hover glow */
+.features-section .feature-card:hover,
+.features-section .feature-card:focus-within{
+  border-color:#0e7cf2 !important;   /* strong brand blue border */
+  box-shadow:
+    0 0 0 1px #0e7cf2,               /* sharp edge outline */
+    0 0 22px rgba(14,124,242,.75),   /* strong blue glow */
+    0 8px 24px rgba(0,0,0,.28) !important; /* depth shadow */
+  transform: translateY(-2px);
+}
+/* === Footer icon normalization === */
+.nt-footer .ico,
+.nt-footer svg,
+.nt-footer img{
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: inline-block;
+
+  /* force same color style */
+  fill: currentColor !important;
+  stroke: none !important;
+  filter: none !important;
+
+  /* inherit text color for consistency */
+  color: var(--ink);
+  opacity: 0.9;
+}
+
+/* Email icon image — tint it to match text color */
+.nt-footer img.ico{
+  filter: brightness(0) invert(1); /* default for dark mode (white look) */
+}
+:root:not([data-theme='dark']) .nt-footer img.ico{
+  filter: none; /* show dark icon in light mode */
+}
+
+/* Align icons with text lines */
+.nt-footer .nt-with-ico{
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+/* --- FIX 1: make sure .cta-card is a CLASS selector everywhere --- */
+/* If you don't want to hunt through the file right now, this one rule
+   will safely override any earlier (wrong) `cta-card{}` blocks. */
+.cta-card { /* class selector */
+  background: transparent;
+  border: 1px solid var(--border);
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* --- FIX 2: pricing page-specific, subtle dark panel in DARK mode --- */
+:root[data-theme='dark'] .pricing-section + app-subscribe-bar .cta-card,
+:root[data-theme='dark'] .pricing-section + section .cta-card { /* if the markup is in-page */
+  background: rgba(255,255,255,.03) !important;        /* light black */
+  border-color: rgba(207,228,255,.16) !important;      /* faint outline */
+  box-shadow: 0 0 0 1px rgba(0,0,0,.35) inset;         /* slight inner edge */
+}
+
+/* Keep it crisp in LIGHT mode and make the title black */
+:root:not([data-theme='dark']) .pricing-section + app-subscribe-bar .cta-card,
+:root:not([data-theme='dark']) .pricing-section + section .cta-card {
+  background: #fff !important;
+  border-color: #e5e7eb !important;
+}
+:root:not([data-theme='dark']) .cta-card .cta-title {
+  color: #0e1116 !important;
+}
+/* Light mode fix: keep layout same, only adjust contrast */
+:root:not([data-theme='dark']) .res-search .search-field{
+  background:#fff !important;       /* visible against light bg */
+  border:1px solid #e5e7eb !important;
+}
+
+:root:not([data-theme='dark']) .res-search .search-field input{
+  color:#000 !important;            /* readable text */
+}
+
+:root:not([data-theme='dark']) .res-search .search-field input::placeholder{
+  color:rgba(0,0,0,.55) !important; /* subtle but visible placeholder */
+}
+/* ===== CTA card (Subscribe) — exact look per comps ===== */
+
+/* shared sizing */
+.cta-card{
+  max-width: 1100px;
+  margin-inline: auto;
+  border-radius: 16px;
+  padding: 48px 24px;
+  backdrop-filter: none !important; /* remove any blur that can look like a fill */
+}
+
+/* LIGHT MODE: solid white panel + subtle gray border */
+:root:not([data-theme='dark']) .cta-card{
+  background: #fff !important;
+  border: 1px solid #e5eaf1 !important;
+  box-shadow: 0 1px 2px rgba(16,24,40,.06) !important;
+}
+:root:not([data-theme='dark']) .cta-card .cta-title{ color:#0e1116 !important; }
+
+/* DARK MODE: NO fill (transparent) + very subtle outline only */
+:root[data-theme='dark'] .cta-card{
+  background: transparent !important;               /* key change */
+  border: 1px solid rgba(207,228,255,.16) !important; /* thin outline */
+  box-shadow: none !important;                       /* remove panel shadow */
+}
+
+/* Keep the input group looking the same in both themes */
+.cta-form{ gap: 8px; }
+
+/* Make sure nothing else reintroduces a dark panel */
+:root[data-theme='dark'] .cta-card::before,
+:root[data-theme='dark'] .cta-card::after{ content:none !important; }
+/* === Make the header Login match the Subscribe “Sign Up” button === */
+/* High specificity + !important to beat global .btn.primary rules */
+.header .btn.primary{
+  /* cancel global sizing */
+  min-width: 0 !important;
+  width: 108px !important;
+
+  /* match CTA size */
+  height: 36px !important;
+  line-height: 44px !important;
+  padding: 0 18px !important;
+  border-radius: 10px !important;
+
+  /* match CTA colors/shadow */
+  background: #0e7cf2 !important;
+  border: 1px solid #0e7cf2 !important;
+  color: #fff !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  box-shadow: 0 8px 28px rgba(14,124,242,.42) !important;
+  transition: transform .12s ease, box-shadow .12s ease !important;
+}
+
+.header .btn.primary:hover{
+  transform: translateY(-1px) !important;
+  box-shadow: 0 10px 32px rgba(14,124,242,.5) !important;
+}
+
+.header .btn.primary:active{
+  transform: translateY(0) !important;
+  box-shadow: 0 6px 22px rgba(14,124,242,.35) !important;
+}
+/* ===============================
+   TYPO OVERRIDES (RESPONSIVE + THEME)
+   Paste at end of global.css
+   =============================== */
+
+/* --- HOW IT WORKS --- */
+.howit-kicker{
+  font-size: clamp(16px, 1.2vw + 10px, 20px) !important;
+  line-height: 1.35;
+  letter-spacing: .02em;
+}
+#howit-title{
+  font-size: clamp(32px, 4vw + 12px, 48px) !important;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+/* --- INTEGRATIONS (kicker + title) --- */
+.kicker{
+  font-size: clamp(16px, 1.2vw + 10px, 20px) !important;
+  line-height: 1.35;
+  letter-spacing: .02em;
+}
+.kicker + h1{
+  font-size: clamp(32px, 4vw + 12px, 48px) !important;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+/* --- PRICING --- */
+.pricing-title{
+  font-size: clamp(32px, 4vw + 12px, 48px) !important;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.pricing-sub{
+  font-size: clamp(16px, 1.2vw + 10px, 20px) !important;
+  line-height: 1.5;
+}
+
+/* --- FAQS --- */
+h4.nt-faqs__title{
+  font-size: clamp(16px, 1.2vw + 10px, 20px) !important;
+  line-height: 1.35;
+  letter-spacing: .02em;
+}
+h2.nt-faqs__title{
+  font-size: clamp(32px, 4vw + 12px, 48px) !important;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+/* --- CONTACT --- */
+.nt-contact__title{
+  font-size: clamp(32px, 4vw + 12px, 48px) !important;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+
+/* ===== THEME COLORS (light/dark) ===== */
+/* Light mode: near-black headings */
+:root:not([data-theme='dark']) .howit-kicker,
+:root:not([data-theme='dark']) #howit-title,
+:root:not([data-theme='dark']) .kicker,
+:root:not([data-theme='dark']) .kicker + h1,
+:root:not([data-theme='dark']) .pricing-title,
+:root:not([data-theme='dark']) .pricing-sub,
+:root:not([data-theme='dark']) h4.nt-faqs__title,
+:root:not([data-theme='dark']) h2.nt-faqs__title,
+:root:not([data-theme='dark']) .nt-contact__title{
+  color: #0e1116 !important;
+}
+
+/* Dark mode: white headings */
+:root[data-theme='dark'] .howit-kicker,
+:root[data-theme='dark'] #howit-title,
+:root[data-theme='dark'] .kicker,
+:root[data-theme='dark'] .kicker + h1,
+:root[data-theme='dark'] .pricing-title,
+:root[data-theme='dark'] .pricing-sub,
+:root[data-theme='dark'] h4.nt-faqs__title,
+:root[data-theme='dark'] h2.nt-faqs__title,
+:root[data-theme='dark'] .nt-contact__title{
+  color: #fff !important;
+}
+/* ===== Crossed-out monthly (shows when Year is active) ===== */
+.pricing-section .price .was-inline{
+  display:inline-block !important;
+  margin-left:6px !important;
+  font-size:14px !important;
+  font-weight:600 !important;
+  text-decoration:line-through !important;
+  text-decoration-thickness:2px !important;
+  text-decoration-color:currentColor !important;
+  text-underline-offset:0.12em !important;
+  position:relative !important;
+  top:-6px !important;
+  opacity:.95 !important;
+  mix-blend-mode:normal !important;   /* prevent “disappearing” on light bg */
+  filter:none !important;
+}
+
+/* Light mode: darker gray so it reads on white */
+:root:not([data-theme='dark']) .pricing-section .price .was-inline{
+  color:#475569 !important;           /* slate-600 */
+}
+
+/* Dark mode: soft bluish-gray */
+:root[data-theme='dark'] .pricing-section .price .was-inline{
+  color:rgba(219,231,255,.88) !important;
+}
+
+/* ===== Uniform blue hover glow for pricing cards (both themes) ===== */
+.pricing-section{
+  --pricing-ring: rgba(14,124,242,.56); /* #0e7cf2 ring */
+  --pricing-glow: rgba(14,124,242,.18); /* soft halo */
+}
+.pricing-section .price-card{
+  border:1px solid var(--border);
+  border-radius:16px;
+  transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
+}
+.pricing-section .price-card:hover,
+.pricing-section .price-card:focus-within{
+  border-color: var(--pricing-ring) !important;
+  box-shadow: 0 0 0 2px var(--pricing-ring), 0 12px 32px var(--pricing-glow) !important;
+  transform: translateY(-2px);
+  outline: none;
+}
+/* ===== FAQ heading visibility (light mode) ===== */
+:root:not([data-theme='dark']) .faqs-section .faqs-heading h2{
+  color:#0e1116 !important;           /* solid near-black */
+  text-shadow:none !important;
+  mix-blend-mode:normal !important;
+}
+
+/* Make the horizontal rules visible in light mode too */
+:root:not([data-theme='dark']) .faqs-section .faqs-heading .line{
+  background:#e5e7eb !important;      /* soft gray line */
+  height:2px;                          /* a hair bolder so it shows */
+}
 

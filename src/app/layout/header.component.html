@@ -1,120 +1,112 @@
 <header class="header">
   <style>
-    /* ===== Base nav (dark-mode default) ===== */
-    .header{position:relative;z-index:60}
-    .header .row{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .header .menu{display:flex;align-items:center;gap:24px}
+  /* ========= Fixed, translucent header ========= */
+  :root{ --header-h: 68px; }
 
-    .header .menu>a,
-    .header .drop__toggle{
-      position:relative;display:inline-flex;align-items:center;gap:6px;
-      padding:8px 4px;border:0;background:none;cursor:pointer;
-      color:#dbe7ff;text-decoration:none;font-weight:600;font-size:14px;line-height:1;
-      transition:color .15s ease;
-    }
-    .header .menu>a.active,
-    .header .drop__toggle.active{color:#ffffff}
-    .caret{display:inline-block;transform:translateY(-1px) rotate(0);transition:transform .18s}
-    .drop.open .caret{transform:translateY(-1px) rotate(180deg)}
-    .drop{position:relative}
+  .header{
+    position: fixed;      /* <- always stays at top */
+    top: 0; left: 0; right: 0;
+    z-index: 2000;
 
-    .panel{
-      position:absolute;left:0;top:100%;
-      width:max-content;border-radius:10px;overflow:hidden;z-index:50;
-      background:linear-gradient(180deg,rgba(207,228,255,.75) 0%,
-                                         rgba(55,85,120,.85) 45%,
-                                         rgba(12,26,42,.96) 100%);
-      border:1px solid rgba(207,228,255,.18);
-      box-shadow:0 16px 40px rgba(0,0,0,.45);
-      backdrop-filter:saturate(120%) blur(2px);
-    }
-    .panel::before{content:"";position:absolute;left:0;right:0;top:-6px;height:6px} /* hover buffer */
+    background: rgba(11,21,38,.72);                    /* dark glass */
+    backdrop-filter: saturate(120%) blur(8px);
+    -webkit-backdrop-filter: saturate(120%) blur(8px);
+    border-bottom: 1px solid rgba(207,228,255,.12);
+  }
 
-    .panel a{
-      display:block;padding:8px 12px;font-size:14px;line-height:20px;
-      color:#eef6ff;text-decoration:none;white-space:nowrap;
-      transition:background .12s ease,color .12s ease;
-    }
-    .panel a:hover{background:rgba(255,255,255,.07)}
+  /* give the row a consistent height */
+  .header .row{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    min-height: var(--header-h);
+  }
 
-    /* Sizes to match spec */
-    .panel--integrations{width:436px;max-width:92vw}
-    .panel__body.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2px 22px;padding:8px 12px 0}
-    .panel__footer{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-top:1px solid rgba(207,228,255,.15);background:#0e7cf2;color:#fff;font-weight:700}
-    .panel__footer .chev{font-size:18px;line-height:1}
+  /* nudge the document down so content isn’t hidden under the fixed header */
+  body{ padding-top: var(--header-h); }
 
-    .panel--resources{width:177px}
-    .panel--resources a{padding:8px 12px}
+  /* ========= Base nav ========= */
+  .header .menu{display:flex;align-items:center;gap:24px;flex-wrap:nowrap;}
 
-    /* ===== LIGHT MODE OVERRIDES ===== */
-    :root:not([data-theme='dark']) .header .menu>a,
-    :root:not([data-theme='dark']) .header .drop__toggle{color:#000 !important;}
+  .header .menu>a,
+  .header .drop__toggle{
+    position:relative;display:inline-flex;align-items:center;gap:6px;
+    padding:0 8px;border:0;background:none;cursor:pointer;
+    color:#dbe7ff;text-decoration:none;font-weight:600;font-size:14px;line-height:28px;
+    height:28px;                                       /* unify clickable box */
+    transition:color .15s ease;
+    font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  }
+  .header .menu>a.active,
+  .header .drop__toggle.active{color:#ffffff}
 
-    :root:not([data-theme='dark']) .header .menu>a:hover,
-    :root:not([data-theme='dark']) .header .menu>a:focus,
-    :root:not([data-theme='dark']) .header .menu>a:active,
-    :root:not([data-theme='dark']) .header .drop__toggle:hover,
-    :root:not([data-theme='dark']) .header .drop__toggle:focus,
-    :root:not([data-theme='dark']) .header .drop__toggle:active{color:#000 !important;}
+  .header .menu > .drop{position:relative;display:inline-block;vertical-align:middle;}
+  .header .menu > .drop > .drop__toggle{
+    margin:0;border:0;background:none;-webkit-appearance:none;appearance:none;
+  }
 
-    :root:not([data-theme='dark']) .header .menu>a.active,
-    :root:not([data-theme='dark']) .header .drop__toggle.active{color:#000 !important;}
+  /* Caret baseline fix */
+  .caret{display:inline-block;transition:transform .18s; font-size:12px; line-height:1; margin-left:4px; position:relative; top:0;}
+  .drop.open .caret{transform:rotate(180deg);}
 
-    :root:not([data-theme='dark']) .panel{
-      background:#fff;border:1px solid #e5e7eb;box-shadow:0 14px 34px rgba(0,0,0,.18);backdrop-filter:none;
-    }
-    :root:not([data-theme='dark']) .panel a{color:#000;}
-    :root:not([data-theme='dark']) .panel a:hover{background:#f5f5f5;}
-    :root:not([data-theme='dark']) .panel__footer{background:#0e7cf2;color:#fff;}
+  /* ========= Dropdown panels ========= */
+  .panel{
+    position:absolute;left:0;top:100%;
+    width:max-content;border-radius:10px;overflow:hidden;z-index:2050;
+    background:linear-gradient(180deg,rgba(207,228,255,.75) 0%,
+                                       rgba(55,85,120,.85) 45%,
+                                       rgba(12,26,42,.96) 100%);
+    border:1px solid rgba(207,228,255,.18);
+    box-shadow:0 16px 40px rgba(0,0,0,.45);
+    backdrop-filter:saturate(120%) blur(2px);
+  }
+  .panel::before{content:"";position:absolute;left:0;right:0;top:-6px;height:6px;} /* hover buffer */
 
-    :root:not([data-theme='dark']) .header ::selection{background:#cde6ff;color:#000;}
-    :root[data-theme='dark'] .header ::selection{background:#1e3a8a;color:#fff;}
+  .panel a{
+    display:block;padding:8px 12px;font-size:14px;line-height:20px;
+    color:#eef6ff;text-decoration:none;white-space:nowrap;
+    transition:background .12s ease,color .12s ease;
+  }
+  .panel a:hover{background:rgba(255,255,255,.07)}
 
-    /* Unify link & toggle boxes so headings align on one row */
-    .header .menu > a,
-    .header .menu > .drop > .drop__toggle{
-      height:28px !important;
-      line-height:28px !important;
-      padding:0 8px !important;
+  /* Sizes to match spec */
+  .panel--integrations{width:436px;max-width:92vw}
+  .panel__body.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2px 22px;padding:8px 12px 0}
+  .panel__footer{
+    display:flex;align-items:center;justify-content:flex-end;gap:8px;
+    padding:10px 14px;border-top:1px solid rgba(207,228,255,.15);
+    background:#0e7cf2;color:#fff;font-weight:700;text-align:right;
+  }
+  .panel__footer .chev{font-size:18px;line-height:1}
 
-      display:inline-flex !important;
-      align-items:center !important;
-      vertical-align:middle !important;
+  .panel--resources{width:177px}
+  .panel--resources a{padding:8px 12px}
 
-      font-weight:600 !important;
-      font-size:14px !important;
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif !important;
-    }
+  /* ========= Light mode overrides ========= */
+  :root:not([data-theme='dark']) .header{
+    background: rgba(255,255,255,.78);                 /* light glass */
+    border-bottom: 1px solid rgba(0,0,0,.08);
+  }
+  :root:not([data-theme='dark']) .header .menu>a,
+  :root:not([data-theme='dark']) .header .drop__toggle{color:#000 !important;}
+  :root:not([data-theme='dark']) .header .menu>a:hover,
+  :root:not([data-theme='dark']) .header .menu>a:focus,
+  :root:not([data-theme='dark']) .header .menu>a:active,
+  :root:not([data-theme='dark']) .header .drop__toggle:hover,
+  :root:not([data-theme='dark']) .header .drop__toggle:focus,
+  :root:not([data-theme='dark']) .header .drop__toggle:active{color:#000 !important;}
+  :root:not([data-theme='dark']) .header .menu>a.active,
+  :root:not([data-theme='dark']) .header .drop__toggle.active{color:#000 !important;}
 
-    .header .menu > .drop > .drop__toggle{
-      margin:0 !important;border:0 !important;background:none !important;
-      -webkit-appearance:none !important;appearance:none !important;
-    }
-    .header .menu{flex-wrap:nowrap;} /* keep in one row */
+  :root:not([data-theme='dark']) .panel{
+    background:#fff;border:1px solid #e5e7eb;box-shadow:0 14px 34px rgba(0,0,0,.18);backdrop-filter:none;
+  }
+  :root:not([data-theme='dark']) .panel a{color:#000;}
+  :root:not([data-theme='dark']) .panel a:hover{background:#f5f5f5;}
+  :root:not([data-theme='dark']) .panel__footer{background:#0e7cf2;color:#fff;}
 
-    .header .menu > .drop{display:inline-block;vertical-align:middle;}
+  :root:not([data-theme='dark']) .header ::selection{background:#cde6ff;color:#000;}
+  :root[data-theme='dark']     .header ::selection{background:#1e3a8a;color:#fff;}
+</style>
 
-    /* Caret baseline fix: remove the tiny upward nudge and just rotate */
-    .header .menu .drop__toggle .caret{
-      font-size:12px;line-height:1;margin-left:4px;
-      position:relative;top:0;                      /* <- key change */
-      transform:rotate(0deg) translateY(0) !important;  /* override previous translateY(-1px) */
-    }
-    .drop.open .caret{transform:rotate(180deg) translateY(0) !important;}
-
-    /* ====== OVERRIDE: Right-align "See All" in Integrations ====== */
-    .panel--integrations .panel__footer{
-      width:100%;                 /* let the footer span full panel */
-      justify-content:flex-end;   /* push content to the right */
-      text-align:right;           /* ensure text hugs the right edge */
-    }
-
-    /* ensure colors don’t flip in light mode */
-    :root:not([data-theme='dark']) .header .menu > a,
-    :root:not([data-theme='dark']) .header .menu > .drop > .drop__toggle{ color:#000 !important; }
-    :root[data-theme='dark'] .header .menu > a,
-    :root[data-theme='dark'] .header .menu > .drop > .drop__toggle{ color:#dbe7ff !important; }
-  </style>
 
   <div class="container row">
     <!-- Brand -->

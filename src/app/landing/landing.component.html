@@ -1,6 +1,8 @@
 <br>
 <br>
-
+<br>
+<br>
+<br>
 
 <section class="hero">
   <h1>Your AI that knows <br> your business</h1>
@@ -222,6 +224,9 @@
       <div class="body">
         <div class="price">
           <span class="big">${{ displayedPrice('starter') | number:'1.0-0' }}</span>
+          <span class="was-inline" *ngIf="billing==='year'">
+            ${{ prices.starter | number:'1.0-0' }}
+          </span>
           <span class="unit">/month</span>
         </div>
 
@@ -262,8 +267,10 @@
 
         <div class="card-footer">
           <div class="view-all"><a routerLink="/pricing">View all ›</a></div>
-<a class="btn primary cta" routerLink="/contactus" routerLinkActive="active">
-         Contact Us <span aria-hidden="true"></span></a>        </div>
+          <a class="btn primary cta" routerLink="/contactus" routerLinkActive="active">
+            Contact Us
+          </a>
+        </div>
       </div>
     </article>
 
@@ -277,6 +284,9 @@
       <div class="body">
         <div class="price">
           <span class="big">${{ displayedPrice('pro') | number:'1.0-0' }}</span>
+          <span class="was-inline" *ngIf="billing==='year'">
+            ${{ prices.pro | number:'1.0-0' }}
+          </span>
           <span class="unit">/month</span>
         </div>
 
@@ -298,9 +308,9 @@
     </article>
   </div>
 
-  <!-- Hard overrides to guarantee visibility/alignment -->
+  <!-- Local overrides: crossed price + uniform blue glow -->
   <style>
-    /* 20% pill next to Year */
+    /* Save 20% pill */
     .billing-toggle{ display:flex; gap:10px; align-items:center; justify-content:center; }
     .billing-toggle .save-note{
       display:inline-block; margin-left:2px; padding:4px 10px;
@@ -308,7 +318,7 @@
       background:var(--brand); color:#fff; white-space:nowrap;
     }
 
-    /* Footer sticks to bottom of card */
+    /* Footer sticks to bottom */
     .price-card .body{ display:flex; flex-direction:column; height:100%; }
     .price-card .card-footer{
       margin-top:auto; display:grid; grid-template-columns:1fr; gap:12px;
@@ -331,6 +341,59 @@
       background:var(--brand) !important; border:1px solid var(--brand) !important;
       color:#fff !important; box-shadow:none !important; white-space:nowrap; text-align:center;
     }
+
+    /* Crossed-out monthly price (shows on Year) */
+    .price .was-inline{
+      margin-left:6px; font-size:14px; font-weight:600; text-decoration:line-through;
+      position:relative; top:-6px; opacity:.85;
+      color:rgba(219,231,255,.85); /* dark */
+    }
+    :root:not([data-theme='dark']) .price .was-inline{ color:#6b7280; } /* light */
+
+    /* === Uniform blue glow for pricing cards (both themes) === */
+    .pricing-section{
+      --pricing-ring: rgba(14,124,242,.56); /* #0e7cf2 ring */
+      --pricing-glow: rgba(14,124,242,.18); /* soft halo */
+    }
+    .pricing-section .price-card{
+      border:1px solid var(--border);
+      border-radius:16px;
+      transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
+      will-change: transform;
+    }
+    .pricing-section .price-card:hover,
+    .pricing-section .price-card:focus-within{
+      border-color: var(--pricing-ring) !important;
+      box-shadow: 0 0 0 2px var(--pricing-ring), 0 12px 32px var(--pricing-glow) !important;
+      transform: translateY(-2px);
+      outline: none;
+    }
+    /* ==== Crossed-out monthly price (visible in both themes) ==== */
+.pricing-section .price .was-inline{
+  display:inline-block;
+  margin-left:6px;
+  font-size:14px;
+  font-weight:600;
+  text-decoration:line-through;
+  text-decoration-thickness:2px;
+  text-decoration-color:currentColor;
+  text-underline-offset:0.12em;
+  position:relative;
+  top:-6px;
+  opacity:.95;
+  mix-blend-mode:normal !important; /* prevent disappearing on light bg */
+}
+
+/* Light mode: darker gray so it reads on white */
+:root:not([data-theme='dark']) .pricing-section .price .was-inline{
+  color:#475569 !important; /* slate-600 */
+}
+
+/* Dark mode: soft bluish-gray */
+:root[data-theme='dark'] .pricing-section .price .was-inline{
+  color:rgba(219,231,255,.85) !important;
+}
+
   </style>
 
   <!-- Equalize heights -->
@@ -349,6 +412,7 @@
     })();
   </script>
 </section>
+
 
 
 

@@ -1,27 +1,19 @@
+<br>
+<br>
+<br>
+<br>
+
 <section class="container pricing-section">
   <h2 class="pricing-title">Simple pricing for any stage</h2>
   <p class="lead pricing-sub">Pay for what you use. Grow on your terms</p>
   <br>
 
-  <!-- Billing toggle -->
+  <!-- Segmented Month / Year toggle -->
   <div class="billing-toggle">
-    <button
-      type="button"
-      class="pill"
-      [class.active]="billing === 'month'"
-      (click)="setBilling('month')">
-      Month
-    </button>
-
-    <button
-      type="button"
-      class="pill"
-      [class.active]="billing === 'year'"
-      (click)="setBilling('year')">
-      Year
-    </button>
-
-    <!-- lives next to year toggle -->
+    <div class="seg">
+      <button type="button" class="pill" [class.active]="billing==='month'" (click)="setBilling('month')">Month</button>
+      <button type="button" class="pill" [class.active]="billing==='year'"  (click)="setBilling('year')">Year</button>
+    </div>
     <span class="save-note">Save 20%</span>
   </div>
 
@@ -37,6 +29,8 @@
       <div class="body">
         <div class="price">
           <span class="big">${{ displayedPrice('starter') | number:'1.0-0' }}</span>
+          <!-- the small crossed-out monthly price, inline and slightly raised -->
+          <span class="was-inline" *ngIf="billing==='year'">{{ prices.starter | number:'1.0-0' }}</span>
           <span class="unit">/month</span>
         </div>
 
@@ -49,7 +43,6 @@
         </ul>
 
         <div class="card-footer">
-          <!-- <div class="view-all"><a routerLink="/pricing">View all ›</a></div> -->
           <a class="btn primary cta">Get Started</a>
         </div>
       </div>
@@ -76,12 +69,7 @@
         </ul>
 
         <div class="card-footer">
-          <!-- <div class="view-all"><a routerLink="/pricing">View all ›</a></div> -->
-          <!-- <a class="btn primary cta"routerLink="/contactus"
-   >
-  Contact Us</a> -->
-  <a class="btn primary cta" routerLink="/contactus" routerLinkActive="active">
-         Contact Us <span aria-hidden="true"></span></a>
+          <a class="btn primary cta" routerLink="/contactus" routerLinkActive="active">Contact Us</a>
         </div>
       </div>
     </article>
@@ -96,6 +84,8 @@
       <div class="body">
         <div class="price">
           <span class="big">${{ displayedPrice('pro') | number:'1.0-0' }}</span>
+          <!-- the small crossed-out monthly price, inline and slightly raised -->
+          <span class="was-inline" *ngIf="billing==='year'">{{ prices.pro | number:'1.0-0' }}</span>
           <span class="unit">/month</span>
         </div>
 
@@ -110,67 +100,188 @@
         </ul>
 
         <div class="card-footer">
-          <!-- <div class="view-all"><a routerLink="/pricing">View all ›</a></div> -->
           <a class="btn primary cta">Get Started</a>
         </div>
       </div>
     </article>
   </div>
 
-  <!-- Hard overrides to guarantee visibility/alignment -->
+  <!-- Local overrides for layout/positioning -->
   <style>
-    /* 20% pill next to Year */
-    .billing-toggle{ display:flex; gap:10px; align-items:center; justify-content:center; }
-    .billing-toggle .save-note{
-      display:inline-block; margin-left:2px; padding:4px 10px;
-      font-size:12px; font-weight:700; border-radius:9999px;
-      background:var(--brand); color:#fff; white-space:nowrap;
-    }
+    /* Joined Month/Year */
+    .billing-toggle{ display:flex; align-items:center; justify-content:center; gap:10px; margin:6px 0 10px; }
+    .billing-toggle .seg{ display:inline-flex; gap:0; padding:4px; border:1px solid var(--border); border-radius:9999px; background:var(--card); }
+    .billing-toggle .pill{ border:0; background:transparent; color:var(--ink); cursor:pointer; padding:8px 20px; border-radius:9999px; font-weight:700; font-size:14px; line-height:1; }
+    .billing-toggle .pill.active{ background:#0e7cf2; color:#fff; }
+    .save-note{ display:inline-block; padding:4px 10px; font-size:12px; font-weight:800; border-radius:9999px; background:var(--brand); color:#fff; white-space:nowrap; }
 
-    /* Footer sticks to bottom of card */
-    .price-card .body{ display:flex; flex-direction:column; height:100%; }
-    .price-card .card-footer{
-      margin-top:auto; display:grid; grid-template-columns:1fr; gap:12px;
-      align-items:center; position:relative; z-index:1;
-    }
+    /* Grid makes all cards equal height and expandable automatically */
+    .pricing-frame{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:24px; align-items:stretch; }
+    .price-card{ display:flex; flex-direction:column; }
+    .price-card .body{ display:flex; flex-direction:column; flex:1 1 auto; }
+    .price-card .card-footer{ margin-top:auto; display:flex; justify-content:center; }
 
-    /* Right-aligned link; theme-aware color */
-    .price-card .view-all{ justify-self:end; font-size:14px; font-weight:600; line-height:1; }
-    .price-card .view-all a{ text-decoration:none; cursor:pointer; }
-    .price-card .view-all a:hover{ text-decoration:underline; }
-    :root:not([data-theme='dark']) .pricing-section .price-card .view-all a{ color:#0e1116 !important; }
-    :root[data-theme='dark'] .pricing-section .price-card .view-all a{ color:#fff !important; }
-
-    /* Uniform filled pill CTAs (all same size) */
+    /* CTA button uniform size and pinned bottom */
     .price-card .cta{
-      justify-self:center;
       display:inline-flex; align-items:center; justify-content:center;
-      height:44px !important; width:260px !important;
-      padding:0 24px !important; border-radius:9999px !important;
-      background:var(--brand) !important; border:1px solid var(--brand) !important;
-      color:#fff !important; box-shadow:none !important; white-space:nowrap; text-align:center;
+      height:44px !important; width:260px !important; padding:0 24px !important;
+      border-radius:9999px !important; background:var(--brand) !important; border:1px solid var(--brand) !important;
+      color:#fff !important; white-space:nowrap;
     }
+
+    /* Inline, small, crossed-out monthly price (exactly next to big number) */
+    .price .was-inline{
+      margin-left:6px; font-size:14px; font-weight:600; text-decoration:line-through;
+      position:relative; top:-6px; opacity:.8;
+      color:rgba(219,231,255,.85);             /* dark */
+    }
+    :root:not([data-theme='dark']) .price .was-inline{ color:#6b7280; } /* light */
+    /* --- PRICING PAGE ONLY: CTA card tone & border --- */
+/* Matches a .cta-card that appears after the pricing section on the page */
+.container.pricing-section + .cta-card,
+.container.pricing-section ~ .cta-card{
+  /* shared */
+  border-radius: 16px;
+  border-width: 1px;
+  border-style: solid;
+}
+
+/* Dark mode: subtle light-black panel + visible border */
+:root[data-theme='dark'] .container.pricing-section + .cta-card,
+:root[data-theme='dark'] .container.pricing-section ~ .cta-card{
+  /* a touch lighter than the page so it “lifts” */
+  background: rgba(255,255,255,.02);         /* very soft charcoal */
+  /* a soft black stroke so it’s visible on dark */
+  border-color: rgba(0,0,0,.55);
+  /* optional faint inner edge so it reads as a card */
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+}
+
+/* Light mode: keep the standard white card + light grey border */
+:root:not([data-theme='dark']) .container.pricing-section + .cta-card,
+:root:not([data-theme='dark']) .container.pricing-section ~ .cta-card{
+  background: #ffffff;
+  border-color: #e5e7eb;
+}
+
+/* Ensure the CTA heading turns black in light mode */
+:root:not([data-theme='dark']) .cta-card .cta-title{
+  color: #0e1116 !important;
+}
+/* ===== SUBSCRIBE BAR (exact design, light & dark) ===== */
+
+/* Base box */
+.cta-card{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 28px;
+  border-radius: 12px;
+  backdrop-filter: none;
+}
+
+/* LIGHT MODE — pure white card + soft gray border/shadow */
+:root:not([data-theme='dark']) .cta-card{
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;               /* subtle gray stroke */
+  box-shadow: 0 1px 2px rgba(16,24,40,.04) !important; /* very light lift */
+  color: #0e1116 !important;
+}
+
+/* DARK MODE — near-black panel + faint bluish stroke so it separates
+   from the page background */
+:root[data-theme='dark'] .cta-card{
+  background: #0b111b !important;
+  border: 1px solid rgba(118,169,250,.18) !important;  /* faint blue line */
+  box-shadow: inset 0 0 0 1px rgba(118,169,250,.06);   /* soft inner glow */
+  color: #ffffff !important;
+}
+
+/* Title colour enforcement (light must be black; dark must be white) */
+.cta-title{ 
+  margin: 0;
+  font-weight: 800; 
+  text-align: center;
+  font-size: clamp(28px, 3.2vw, 40px);
+}
+:root:not([data-theme='dark']) .cta-title{ color:#0e1116 !important; }
+:root[data-theme='dark'] .cta-title{ color:#ffffff !important; }
+
+/* Form row */
+.cta-form{ 
+  display:flex; justify-content:center; align-items:center; gap:8px; 
+  margin-top: 18px;
+}
+.cta-input{
+  height: 48px; width: min(640px, 80vw);
+  padding: 0 16px; border-radius: 12px;
+}
+:root:not([data-theme='dark']) .cta-input{
+  background:#fff; color:#0e1116; border:1px solid #d0d5dd;
+}
+:root[data-theme='dark'] .cta-input{
+  background: linear-gradient(180deg,#0f1a28 0%, #0c1623 100%);
+  color:#e6efff; border:1px solid rgba(118,169,250,.25);
+}
+
+.cta-btn{
+  height:48px; padding:0 20px; border-radius:12px;
+  background:#0e7cf2; color:#fff; font-weight:700; border:0;
+}
+
+/* Benefits line */
+.cta-checks{ display:flex; gap:32px; justify-content:center; margin-top:18px; opacity:.92; }
+.cta-checks li{ list-style:none; }
+
+/* ===== PRICING TOGGLE — Month/Year pills touch each other ===== */
+.pricing-section .billing-toggle{ display:inline-flex; gap:0; }
+.pricing-section .billing-toggle .pill{ margin:0; border-radius:9999px; }
+.pricing-section .billing-toggle .pill + .pill{ margin-left:-12px; } /* overlap so they look attached */
+:root:not([data-theme='dark']) .pricing-section .billing-toggle .pill{
+  box-shadow:0 0 0 1px #e5e7eb inset;
+}
+:root[data-theme='dark'] .pricing-section .billing-toggle .pill{
+  box-shadow:0 0 0 1px rgba(118,169,250,.25) inset;
+}
+.pricing-section .billing-toggle .pill.active{ box-shadow:none; }
+/* === Uniform blue glow for pricing cards (both themes) === */
+.pricing-section{
+  /* one source of truth for the ring + glow */
+  --pricing-ring: rgba(14,124,242,.56);   /* #0e7cf2 @ 56% */
+  --pricing-glow: rgba(14,124,242,.18);   /* outer halo */
+}
+
+/* ensure cards have a border to “take” the ring */
+.pricing-section .price-card{
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
+  will-change: transform;
+}
+
+/* Hover/focus: same ring in both light & dark */
+.pricing-section .price-card:hover,
+.pricing-section .price-card:focus-within{
+  border-color: var(--pricing-ring) !important;
+  box-shadow:
+    0 0 0 2px var(--pricing-ring),     /* crisp blue ring */
+    0 12px 32px var(--pricing-glow);   /* soft blue halo */
+  transform: translateY(-2px);
+  outline: none;
+}
+
+/* Extra weight to beat any theme-specific rules elsewhere */
+:root[data-theme='dark'] .pricing-section .price-card:hover,
+:root:not([data-theme='dark']) .pricing-section .price-card:hover{
+  border-color: var(--pricing-ring) !important;
+  box-shadow:
+    0 0 0 2px var(--pricing-ring),
+    0 12px 32px var(--pricing-glow) !important;
+}
+
   </style>
 
-  <!-- Equalize heights -->
-  <script>
-    (function(){
-      function equalizePricingHeights(){
-        const cards = document.querySelectorAll('.pricing-section .price-card');
-        if(!cards.length) return;
-        cards.forEach(c => c.style.removeProperty('height'));
-        let max = 0;
-        cards.forEach(c => max = Math.max(max, c.offsetHeight));
-        cards.forEach(c => c.style.setProperty('height', max + 'px', 'important'));
-      }
-      window.addEventListener('load', equalizePricingHeights);
-      window.addEventListener('resize', () => requestAnimationFrame(equalizePricingHeights));
-    })();
-  </script>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+
+
+  <br><br><br><br><br>
   <app-subscribe-bar></app-subscribe-bar>
 </section>

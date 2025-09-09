@@ -10,9 +10,24 @@ import { RouterModule } from '@angular/router';
 export class PricingComponent {
       constructor(private router: Router) {}
 
-    billing: 'month' | 'year' = 'month';    // default
+    // billing: 'month' | 'year' = 'month';    // default
   private readonly discountPct = 20;      // 20% off when yearly
+prices = {
+  starter: 35,
+  pro: 65
+} as const;
 
+billing: 'month' | 'year' = 'month';
+
+setBilling(mode: 'month' | 'year') {
+  this.billing = mode;
+}
+
+/** Price shown on the card, honoring the 20% yearly discount */
+displayedPrice(plan: 'starter' | 'pro'): number {
+  const base = this.prices[plan];
+  return this.billing === 'year' ? Math.round(base * 0.8) : base;
+}
   /** Base monthly prices (before any discount). */
   private readonly basePrices = {
     starter: 35,
@@ -20,18 +35,18 @@ export class PricingComponent {
   };
 
   /** Price shown in UI depending on billing toggle. */
-  displayedPrice(plan: 'starter' | 'pro'): number {
-    const p = this.basePrices[plan];
-    if (this.billing === 'year') {
-      // 20% off monthly price (rounded to nearest dollar)
-      return Math.round(p * (1 - this.discountPct / 100));
-    }
-    return p;
-  }
+  // displayedPrice(plan: 'starter' | 'pro'): number {
+  //   const p = this.basePrices[plan];
+  //   if (this.billing === 'year') {
+  //     // 20% off monthly price (rounded to nearest dollar)
+  //     return Math.round(p * (1 - this.discountPct / 100));
+  //   }
+  //   return p;
+  // }
 
-  setBilling(mode: 'month' | 'year') {
-    this.billing = mode;
-  }
+  // setBilling(mode: 'month' | 'year') {
+  //   this.billing = mode;
+  // }
 
   goToPricing() {
     // Navigate to your Pricing route/component
