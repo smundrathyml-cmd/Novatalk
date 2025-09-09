@@ -1,0 +1,6 @@
+.nt-footer-logo {
+  height: 28px;       /* matches h3 size */
+  width: auto;
+  display: block;
+  margin-bottom: 12px; /* same spacing as heading had */
+}
